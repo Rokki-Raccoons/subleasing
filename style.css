@@ -1,11 +1,56 @@
-#offers {
-    border: 5px solid red;
-    float: right;
-    width: 30%;
+h1, h2, h3 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: bolder;
+}
+h1 {
+  font-size: 3rem;
+}
+body {
+  font-family: 'Roboto', sans-serif;
 }
 
-#leftside {
-    border: 5px solid red;
-    width: 30%;
+.offer{
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #eee;
+}
 
+.bg-color-grey {
+  background-color: #646464;
+  color: white;
+}
+
+.bg-color-dark-sienna {
+  background-color: #3e000c;
+  color: white;
+}
+
+.bg-color-dark-blue {
+  background-color: #28464b;
+  color: white;
+}
+
+.bg-color-blue {
+  background-color: #326771;
+  color: white;
+}
+
+.color-grey {
+  color: #646464;
+}
+
+.color-dark-sienna {
+  color: #3e000c;
+}
+
+.color-dark-blue {
+  color: #28464b;
+}
+
+.color-blue {
+  color: #326771;
+}
+
+.inline {
+  display: inline;
 }
