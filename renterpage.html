@@ -6,10 +6,15 @@
      <!-- Required meta tags -->
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1">
- 
+
      <!-- Bootstrap CSS -->
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Roboto&display=swap" rel="stylesheet"> 
+    <link href="/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
 </head>
 
      <!-- some of this is example code borrowed from the internet, to show we can host stuff within Node. We will not be using this code when we are actually developing our web pages -->
@@ -18,42 +23,107 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
 
-  <div class="jumbotron py-3 text-center text-white bg-secondary">
-    <h1>Subletti</h1>
-    <p>this is a substitue for a real banner</p>
-  </div>
+  <nav class="navbar p-0 mb-4 bg-color-dark-sienna" style="box-shadow: 0px 1px 3px #eee;">
+    <a class="navbar-brand m-0 p-0" href=".\listings.html">
+      <img src=".\images\subletty_logo.png" style="height: 70px;">
+    </a>
+    <ul class="navbar-nav mr-auto">
+      <a class="nav-link dropdown-toggle px-4" style="color: white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        John Doe
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="#">Log Out</a>
+      </div>    
+    </ul>
+  </nav>
 
-  <div id = "offers">
-    <p>From Alice: Wow this looks really nice can we talk about it</p>
-    <button type="button">Give Sam contact information</button>
+  <div class="row px-2">
+    <div class="col-8">
+      <h1 class="mx-1"> Property Page </h1>
+      <div class="card mb-3 text-left">
+        <img class="card-img-top" src=".\images\apartment.jpg" alt="apartment picture">
+        <div class="card-body">
+          <form action="/action_page.php">
+            <div class="form-group row mb-1">
+              <label class="col-auto" style="min-width: 150px;" for="fname">Add Image: </label>
+              <input class="col form-control-file" type="file"  name="image_upload">
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-auto" style="min-width: 150px;" for="fname">Location: </label>
+              <input class="col form-control" type="text"  name="location" value="107 11th Street">
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-auto" style="min-width: 150px;" for="fname">Price/month: </label>
+              <div class="col input-group m-0 p-0">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">$</div>
+                </div>
+                <input class="col form-control" type="number"  name="price" value="600" min="0">
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-auto" style="min-width: 150px;" for="lname">Leasure Duration:</label>
+              <div class="col row align-items-center">
+                <input class="form-control col" type="date"  name="Lease Duration" value="September-May">
+                <p class="col-1 text-center align-self-center">-</p>
+                <input class="form-control col" type="date"  name="Lease Duration" value="September-May">
+              </div>
+              
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-auto" style="min-width: 150px;" for="fname">Link: </label>
+              <input class="col form-control" type="text"  name="link" value="www.google.com">
+            </div>
+            <input class="btn bg-color-dark-blue" type="submit" value="Save Edits">
 
-    <p>From Bob: I'm looking for a place at this time</p>
-    <button type="button">Give Bob contact information</button>
-
-    <p>From Carol: im a creepy person who is stalking you</p>
-    <button type="button">Give Carol contact information</button>
-
-    <P>Message for users:</p>
-    <p>Hi! You can contact me at 800-222-1222 or by email at example@gmail.com</p>
-  </div>
-
-  <div id="leftside">
-    <form action="/action_page.php">
-        <label for="fname">Price: </label>
-        <input type="text"  name="price" value="$600"><br><br>
-        <label for="lname">Leasure Duration:</label>
-        <input type="text"  name="Lease Duration" value="September-May"><br><br>
-        <label for="fname">Link: </label>
-        <input type="text"  name="link" value="www.google.com"><br><br>
-        <label for="fname">Location: </label>
-        <input type="text"  name="location" value="107 11th Street"><br><br>
+          </form>
+        </div>
         
-        <input type="submit" value="Save Edit">
-      </form>
+      </div>  
+      
+
     </div>
-  <img src="apartment.jpg" alt="apartment picture" style="width:70% ;height:600px; float:right;">
-    
-  
-  
-  
+    <div class="col">
+      <div class="card text-left" id = "offers">
+        <div class="card-header">
+          <h2 class="ml-auto mt-3 mb-0">Offers</h2>
+        </div>
+        <div class="card-body p-0">
+          <div class="offer p-2">
+            <div class="row justify-content-between">
+              <h5 class="mb-1 col col-auto font-weight-bold">From Alice:</h5>
+              <button class="btn mx-3 col btn-sm btn-danger" style="max-width:70px">Reject</button>
+            </div>
+            <p class="mb-1"> Wow this looks really nice can we talk about it</p>
+            <button type="button" class="btn bg-color-blue btn-sm btn-block mb-1">Give Alice contact information</button>
+          </div>
+          <div class="offer p-2">
+            <div class="row justify-content-between">
+              <h5 class="mb-1 col col-auto font-weight-bold">From Bob:</h5>
+              <button class="btn mx-3 col btn-sm btn-danger" style="max-width:70px">Reject</button>
+            </div>
+            <p class="mb-1"> I'm looking for a place at this time</p>
+            <button type="button" class="btn bg-color-blue btn-sm btn-block mb-1">Give Bob contact information</button>
+          </div>
+          <div class="offer p-2">
+            <div class="row justify-content-between">
+              <h5 class="mb-1 col col-auto font-weight-bold">From Carol:</h5>
+              <button class="btn mx-3 col btn-sm btn-danger" style="max-width:70px">Reject</button>
+            </div>
+            <p class="mb-1"> im a creepy person who is stalking you</p>
+            <button type="button" class="btn bg-color-blue btn-sm btn-block mb-1">Give Carol contact information</button>
+          </div>
+
+          <form class="p-2">
+            <div class="form-group">
+              <label for="defaultMessage">Default message to users:</label>
+              <textarea class="form-control mb-1" id="defaultMessage">Hi! You can contact me at 800-222-1222 or by email at example@gmail.com</textarea>
+            </div>
+            <input class="btn btn-sm bg-color-dark-blue" type="submit" value="Save Message">
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
