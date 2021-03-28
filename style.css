@@ -34,6 +34,10 @@ body {
   background-color: #326771;
   color: white;
 }
+.bg-color-white {
+  background-color: white;
+  color: black;
+}
 
 .color-grey {
   color: #646464;
