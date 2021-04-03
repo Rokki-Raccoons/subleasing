@@ -5,6 +5,10 @@
   
 # dependencies  
 /node_modules  
+
+# credentials
+.env
+/.env
   
 # IDEs and editors  
 /.idea  
