@@ -34,6 +34,10 @@ body {
   background-color: #326771;
   color: white;
 }
+.bg-color-white {
+  background-color: white;
+  color: black;
+}
 
 .color-grey {
   color: #646464;
@@ -53,4 +57,24 @@ body {
 
 .inline {
   display: inline;
+}
+
+.nav-item{
+  color:white;
+}
+
+.bi-star-fill{
+  color: yellow;
+}
+.bi-star-fill:hover{
+  text-shadow: 0 0 3px #C89933;
+}
+.bi-star{
+  color: lightgrey;
+}
+.bi-star:hover{
+  color: yellow;
+}
+.navbar-collapse.collapse.in {
+  display: block!important;
 }
