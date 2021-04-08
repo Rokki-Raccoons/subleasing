@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-
+import { Component, OnInit, Input, NgModule } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {NgForm} from '@angular/forms';
 import {EditModel} from './edit-model'
 
 @Component({
