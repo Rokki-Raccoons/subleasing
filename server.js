@@ -64,7 +64,7 @@ async function main(){
 main().catch(console.error);
 // server route handler
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/listings.html');
+  res.sendFile(__dirname + '/subleasing/src/index.html');
 });
 
 
