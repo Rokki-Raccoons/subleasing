@@ -2,6 +2,8 @@ import { Component, OnInit, Input, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
 import {EditModel} from './edit-model'
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 
 @Component({
   selector: 'app-edit-listing',
@@ -9,8 +11,6 @@ import {EditModel} from './edit-model'
   styleUrls: ['./edit-listing.component.css']
 })
 export class EditListingComponent implements OnInit {
-
-  @Input() public editor : EditModel;
 
   address = "Default Address";
   photoRef = "no photo found";
@@ -23,31 +23,17 @@ export class EditListingComponent implements OnInit {
   details = "Other Relevant Details";
   listingId = -1.0;
 
-  constructor() { 
-    this.editor = {address: "-",
-                    photoRef: "no photo",
-                    price: 0,
-                    beginDate: "",
-                    endDate: "",
-                    link: "",
-                    beds: 0,
-                    baths: 0,
-                    details: "-",
-                    listingId: 0};
-  }
+  constructor(private route: ActivatedRoute) {}
+
 
   ngOnInit(): void {
-    console.log(this.editor);
-    this.address = this.editor.address;
-    this.photoRef = this.editor.photoRef;
-    this.price = this.editor.price;
-    this.beginDate = this.editor.beginDate;
-    this.endDate = this.editor.endDate;
-    this.link = this.editor.link;
-    this.beds = this.editor.beds;
-    this.baths = this.editor.baths;
-    this.details = this.editor.details;
-    this.listingId = this.editor.listingId;
+      this.route.queryParams.subscribe(params=>{
+      this.price = params.price;
+      this.address = params.address;
+      this.link = params.link;
+
+    });
+
   }
 
 }
