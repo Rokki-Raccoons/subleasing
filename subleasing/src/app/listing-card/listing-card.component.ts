@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {ListingModel} from './listing-model'
 
 @Component({
@@ -9,7 +9,7 @@ import {ListingModel} from './listing-model'
 })
 export class ListingCardComponent implements OnInit {
 
-  @Input() public listing : ListingModel;
+  // @Input() public listing : ListingModel;
 
   address = "Default Address";
   photoRef = "no photo found";
@@ -19,25 +19,18 @@ export class ListingCardComponent implements OnInit {
   details = "Other Relevant Details";
   listingId = -1.0;
 
-  constructor() { 
-    this.listing = {address: "-",
-                    photoRef: "no photo",
-                    price: 0,
-                    beds: 0,
-                    baths: 0,
-                    details: "-",
-                    listingId: 0};
-  }
+  constructor(private route: ActivatedRoute) { }
+
 
   ngOnInit(): void {
-    console.log(this.listing);
-    this.address = this.listing.address;
-    this.photoRef = this.listing.photoRef;
-    this.price = this.listing.price;
-    this.beds = this.listing.beds;
-    this.baths = this.listing.baths;
-    this.details = this.listing.details;
-    this.listingId = this.listing.listingId;
+    this.route.queryParams.subscribe(params=>{
+    this.price = params.price;
+    this.address = params.address;
+    this.beds = params.beds;
+    this.baths = params.baths;
+    this.details = params.details;
+  });
+  
   }
 
   favClick(target: any):void {
