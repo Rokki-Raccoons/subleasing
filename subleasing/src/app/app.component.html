@@ -1,5 +1,11 @@
 <app-header></app-header>
-<app-listing-card [listing]='{address: "Example Address", photoRef:"assets\\images\\apartment.jpg", price: 40,beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-listing-card>
+<ul>
+  <li><a routerLink="/listing-card-component" [queryParams]="{address: 'Example Address', photoRef:'../assets/images/apartment.jpg', price: 40,beds: 2,baths: 1,details: 'Example Details',listingId: 12345}" routerLinkActive="active">Listing Card Component</a></li>
+  <li><a routerLink="/message-box-component" [queryParams]="{senderName: 'Bob',senderID: 12345, messageBody: 'Hi! Im interested in your property. Will you contact me?', messageID: 0}" routerLinkActive="active">Message Box Component</a></li>
+  <li><a routerLink="/edit-listing-component"  [queryParams]="{address: '107 11th Street', price: 40,beginDate: '1990-01-01',endDate: '1999-01-01',link: 'www.nuts.com',beds: 2,baths: 1,details: 'Example Details',listingId: 12345}" routerLinkActive="active">Edit Listing Component</a></li>
+</ul>
+
+<!-- <app-listing-card [listing]='{address: "Example Address", photoRef:"assets\\images\\apartment.jpg", price: 40,beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-listing-card>
 <app-message-box [message]='{senderName: "Bob",senderID: 12345, messageBody: "Hi! Im interested in your property. Will you contact me?", messageID: 0}'></app-message-box>
-<app-edit-listing [editor]='{address: "107 11th Street", photoRef:"assets\\images\\apartment.jpg", price: 40,beginDate: "1990-01-01",endDate: "1999-01-01",link: "www.nuts.com",beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-edit-listing>
+<app-edit-listing [editor]='{address: "107 11th Street", photoRef:"assets\\images\\apartment.jpg", price: 40,beginDate: "1990-01-01",endDate: "1999-01-01",link: "www.nuts.com",beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-edit-listing> -->
 <router-outlet></router-outlet>
