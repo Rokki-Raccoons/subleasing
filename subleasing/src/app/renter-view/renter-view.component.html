@@ -1,0 +1,32 @@
+  <app-header></app-header>
+
+  <div class="row px-2">
+    <div class="col-8">
+      <h1 class="mx-1"> Property Page </h1>
+
+      <app-edit-listing [editor]='{address: "107 11th Street", photoRef:"assets\\images\\apartment.jpg", price: 40,beginDate: "1990-01-01",endDate: "1999-01-01",link: "www.nuts.com",beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-edit-listing>  
+      
+
+    </div>
+    <div class="col">
+      <div class="card text-left" id = "offers">
+        <div class="card-header">
+          <h2 class="ml-auto mt-3 mb-0">Offers</h2>
+        </div>
+        <div class="card-body p-0">
+          <app-message-box [message]='{senderName: "Bob",senderID: 12345, messageBody: "Hi! Im interested in your property. Will you contact me?", messageID: 0}'></app-message-box>
+          <app-message-box [message]='{senderName: "Bob",senderID: 12345, messageBody: "Hi! Im interested in your property. Will you contact me?", messageID: 0}'></app-message-box>
+          <app-message-box [message]='{senderName: "Bob",senderID: 12345, messageBody: "Hi! Im interested in your property. Will you contact me?", messageID: 0}'></app-message-box>
+
+          <form class="p-2">
+            <div class="form-group">
+              <label for="defaultMessage">Default message to users:</label>
+              <textarea class="form-control mb-1" id="defaultMessage">Hi! You can contact me at 800-222-1222 or by email at example@gmail.com</textarea>
+            </div>
+            <input class="btn btn-sm bg-color-dark-blue" type="submit" value="Save Message">
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>

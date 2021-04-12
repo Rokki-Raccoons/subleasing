@@ -11,6 +11,30 @@ export class ListingCardComponent implements OnInit {
 
   // @Input() public listing : ListingModel;
 
+  // address = "Default Address";
+  // photoRef = "no photo found";
+  // price = -1.0;
+  // beds = -1.0;
+  // baths = -1.0;
+  // details = "Other Relevant Details";
+  // listingId = -1.0;
+
+  // constructor(private route: ActivatedRoute) { }
+
+
+  // ngOnInit(): void {
+  //   this.route.queryParams.subscribe(params=>{
+  //   this.price = params.price;
+  //   this.address = params.address;
+  //   this.beds = params.beds;
+  //   this.baths = params.baths;
+  //   this.details = params.details;
+  // });
+  
+  // }
+
+  @Input() public listing : ListingModel;
+
   address = "Default Address";
   photoRef = "no photo found";
   price = -1.0;
@@ -19,18 +43,24 @@ export class ListingCardComponent implements OnInit {
   details = "Other Relevant Details";
   listingId = -1.0;
 
-  constructor(private route: ActivatedRoute) { }
-
-
+  constructor() { 
+    this.listing = {address: "-",
+                    photoRef: "no photo",
+                    price: 0,
+                    beds: 0,
+                    baths: 0,
+                    details: "-",
+                    listingId: 0};
+  }
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params=>{
-    this.price = params.price;
-    this.address = params.address;
-    this.beds = params.beds;
-    this.baths = params.baths;
-    this.details = params.details;
-  });
-  
+    console.log(this.listing);
+    this.address = this.listing.address;
+    this.photoRef = this.listing.photoRef;
+    this.price = this.listing.price;
+    this.beds = this.listing.beds;
+    this.baths = this.listing.baths;
+    this.details = this.listing.details;
+    this.listingId = this.listing.listingId;
   }
 
   favClick(target: any):void {

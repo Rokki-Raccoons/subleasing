@@ -8,6 +8,10 @@ import { HeaderComponent } from './header/header.component';
 import { ListingCardComponent } from './listing-card/listing-card.component';
 import { MessageBoxComponent } from './message-box/message-box.component';
 import { EditListingComponent } from './edit-listing/edit-listing.component';
+import { ListingsComponent } from './listings/listings.component';
+import { RenterViewComponent } from './renter-view/renter-view.component';
+import { LandingComponent } from './landing/landing.component';
+import { DatavisComponent } from './datavis/datavis.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +19,11 @@ import { EditListingComponent } from './edit-listing/edit-listing.component';
     HeaderComponent,
     ListingCardComponent,
     MessageBoxComponent,
-    EditListingComponent
+    EditListingComponent,
+    ListingsComponent,
+    RenterViewComponent,
+    LandingComponent,
+    DatavisComponent
   ],
   imports: [
     BrowserModule,

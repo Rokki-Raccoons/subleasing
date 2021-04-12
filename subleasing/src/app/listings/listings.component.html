@@ -1,0 +1,29 @@
+    <app-header></app-header>
+
+    <div class="row justify-content-center align-items-center">
+      <h1 class="mx-3 col-auto ">Listings</h1>
+      <form class="form-inline col-auto">
+        <div class="d-flex justify-content-center">
+          <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="max-width: 260px; min-width: 50px">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+        <app-listing-card class="col" [listing]='{address: "Example Address1", photoRef:"assets\\images\\apartment.jpg", price: 40,beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-listing-card>
+
+        <app-listing-card class="col" [listing]='{address: "Example Address2", photoRef:"assets\\images\\apartment.jpg", price: 40,beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-listing-card>
+
+        <app-listing-card class="col" [listing]='{address: "Example Address3", photoRef:"assets\\images\\apartment.jpg", price: 40,beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-listing-card>
+
+        <app-listing-card class="col" [listing]='{address: "Example Address4", photoRef:"assets\\images\\apartment.jpg", price: 40,beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-listing-card>
+    </div>
+
+
+     <br>
+     <h2 class = "d-flex justify-content-center"> Saved Listings </h2>
+     <div class="d-flex flex-row">
+
+        <app-listing-card class="col" [listing]='{address: "Example Address5", photoRef:"assets\\images\\apartment.jpg", price: 40,beds: 2,baths: 1,details: "Example Details",listingId: 12345}'></app-listing-card>
+    </div>
