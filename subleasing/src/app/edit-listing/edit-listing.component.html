@@ -1,0 +1,71 @@
+<div class="card mb-3 text-left">
+  <img class="card-img-top" [src]="photoRef" alt="apartment picture">
+  <div class="card-body">
+
+    <form #editForm="ngForm" novalidate id="formAction" action="javascript:void(0);" class="form">
+      <div class="form-group row mb-1">
+        <label class="col-auto" style="min-width: 150px;" for="fname">Add Images: </label>
+        <input class="col form-control-file" type="file" multiple name="image_upload" [(ngModel)]="photoRef">
+      </div>
+      <div class="form-group row mb-2">
+        <label class="col-auto" style="min-width: 150px;" for="location">Location: </label>
+        <input class="col form-control" type="text"  name="location" [(ngModel)]="address">
+      </div>
+      <div class="form-group row mb-2">
+        <label class="col-auto" style="min-width: 150px;" for="price">Price/month: </label>
+        <div class="col input-group m-0 p-0">
+          <div class="input-group-prepend">
+            <div class="input-group-text">$</div>
+          </div>
+          <input class="col form-control" type="number" name="price" [(ngModel)]="price" min="0">
+        </div>
+      </div>
+      <div class="form-group row mb-2">
+        <label class="col-auto" style="min-width: 150px;" for="LeaseDuration">Leasure Duration:</label>
+        <div class="col row align-items-center">
+          <input class="form-control col" type="date"  name="LeaseDuration" [(ngModel)]="beginDate">
+          <div class="col-auto text-center my-auto"><i class="bi bi-dash"></i></div>
+          <input class="form-control col" type="date"  name="LeaseDuration" [(ngModel)]="endDate">
+        </div>
+
+      </div>
+      <div class="form-group row mb-2">
+        <label class="col-auto" style="min-width: 150px;" for="bnb">Bed and Bath: </label>
+        <div class="col input-group m-0 p-0">
+          <div class="input-group-prepend">
+            <div class="input-group-text"> <i class="bi-moon-stars-fill" style="" alt="bed icon"></i> </div>
+          </div>
+          <input class="col form-control" type="number"  name="bnb" [(ngModel)]="beds" min="0">
+        </div>
+        <p class="col-auto text-center my-auto "></p>
+        <div class="col input-group m-0 p-0">
+          <div class="input-group-prepend">
+            <div class="input-group-text"> <i class="bi-droplet-fill" style="" alt="bath icon"></i></div>
+          </div>
+          <input class="col form-control" type="number"  name="bnb" [(ngModel)]="baths" min="0">
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-auto" style="min-width: 150px;" for="link">Link: </label>
+        <input class="col form-control" type="text"  name="link" [(ngModel)]="link">
+      </div>
+      <div class="form-group row mb-2">
+        <label class="col-auto" style="min-width: 150px;" for="description">Other Info: </label>
+        <textarea class="col form-control" name="description" id="description" [(ngModel)]="details">{{details}}</textarea>
+      </div>
+      <input class="btn bg-color-dark-blue" type="submit" value="Save Edits">
+      <!-- <p>Testing: {{address}}</p>
+      <p>Testing: {{photoRef}}</p>
+      <p>Testing: {{price}}</p>
+      <p>Testing: {{beginDate}}</p>
+      <p>Testing: {{endDate}}</p>
+      <p>Testing: {{link}}</p>
+      <p>Testing: {{beds}}</p>
+      <p>Testing: {{baths}}</p>
+      <p>Testing: {{details}}</p> -->
+
+    </form>
+  </div>
+
+</div>
