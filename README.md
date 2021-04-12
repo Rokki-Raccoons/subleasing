@@ -12,3 +12,6 @@ To use this project, follow the steps below:
 6) access http://localhost:3000 from a browser
 7) voila! lab4 displays itself on the page and you can interact with the yelp api through the given form
 
+Lab6
+
+Kolby- I found the dataset to use, and worked with the group to do some transformations to it, removing a variety of extraneous information. For my first visualization, I made a bar plot of the bedroom to bathroom ratio in buildings, remniscient of RPI's regulations for COVID-19. For my second visualization, I made a smooth scatterplot of the year that buildings in Troy were built vs the number of stories they have.
