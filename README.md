@@ -15,7 +15,9 @@ To use this project, follow the steps below:
 Lab6
 For this lab, the biggest (and most surprising) obstacle that the team ran into was the gathering of the initial data set for our database. Kolby, Aliza, Ted and Deena all looked for various API's or datasets that could be used to gather the information we wanted, but everything found was either useless data, not what we were looking for, or required money to access. In the end, Kolby bit the bullet and just bought a database's worth of information on all of Rensselaer County, NY which ended up being mostly cut out for various reasons anyway.
 
-The contents of the lab can be located on the "Visulazations" page of the website, or by diving into the "datavis" component in the angular project. 
+Another problem that we ran into was that the project would run on ng serve, but not ng build / node. Aliza and Kolby worked together in a voice call to diagnose the problem, and figured out that it was our node server being out of date, and so we added in functionality with app.use from previous labs. 
+
+The contents of the lab can be located on the "Visualizations" page of the website, or by diving into the "datavis" component in the angular project. 
 
 Aliza - For this lab I performed some of the intial ETL actions that gave us our initial data set: in particular, I modified the CSV to only show data rows that had a city of "troy". My first visualization "Styles of Structures in Troy, NY" is a bar graph comparing all of the different types of Structures that were in the final "Troy only" data set. The second, "Average Market Value of properties built in each Year" shows what it says in the title. For creativity, I made sure to make both of my visuallizations colorful and "visually similar" (aka I built each graph using the same set of basic parameters to make them look, stylistically, the same). 
 
