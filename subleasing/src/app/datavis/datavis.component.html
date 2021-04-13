@@ -3,9 +3,15 @@
 
 <div class="row justify-content-center align-items-center">
   
-  <img class="mx-3 col-auto" src="assets\\images\lab6_1.png" style="max-width: 600px" alt="Style of Stuctures in Troy, NY">
-  <img class="mx-3 col-auto" src="assets\\images\lab6_2.png" style="max-width: 600px" alt="Average Market Value per Year">
+  <div class="mx-3 col-auto" style="max-width: 600px">
+    <img src="assets\\images\lab6_1.png" style="max-width: 600px" alt="Style of Stuctures in Troy, NY"> <!-- knigha2 visual 1 -->
+    <button class="btn btn-danger" style="width: 600px" type="submit" alt="knigha2 vis1 button" (click)="getStructuresCSV()">Get CSV Data for this visual!</button>
+  </div>
   
+  <div class="mx-3 col-auto" style="max-width: 600px">
+    <img src="assets\\images\lab6_2.png" style="max-width: 600px" alt="Average Market Value per Year"> <!-- knigha2 visual 2 -->
+    <button class="btn btn-danger" style="width: 600px" type="submit" alt="knigha2 vis2 button" (click)="getYearPriceCSV()">Get CSV Data for this visual!</button>
+  </div>
   <img class="mx-3 col-auto" src="assets\\images\fishek3_bedbrRatio.png" style="max-width: 600px" alt="Bedroom to Bathroom ratios, barplot">
   <img class="mx-3 col-auto" src="assets\\images\fishek3_smoothScatter.png" style="max-width: 600px" alt="Smooth Scatterplot of year built vs number of stories in Troy">
 

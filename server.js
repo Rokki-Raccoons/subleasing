@@ -5,6 +5,8 @@ var http = require('http').Server(app);
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config(); //loads connection URI from .env
 
+const converter = require('json-2-csv');
+const fs = require('fs');
 
 app.use(express.static(__dirname + '/subleasing/dist/subleasing'));
 
@@ -75,4 +77,95 @@ app.get('/', function(req, res){
 // start server
 http.listen(3000, function(){
   console.log('Server up on *:3000');
+});
+
+
+app.get('/structures', async function(req, res){
+    console.log(`Get Structures Request: ${JSON.stringify(req.query)}`)
+    const uri = process.env.uri;
+    const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+    // Connect the client to the server
+    await mclient.connect();
+    // Establish and verify connection
+    const database = mclient.db("Lab6");
+    const collection = database.collection("listings");
+    console.log("Connected successfully to listings");
+
+    const projection = { structstyle: 1 };
+    await collection.find().project(projection).toArray(function(err, etl_results) {
+        const prettyJson = JSON.stringify(etl_results, null, 4);
+        console.log("Found data ");
+        converter.json2csv(etl_results, (err, csv) => {
+            if (err) {
+                console.error(err);
+            }
+
+            // store CSV file
+            try {
+                fs.writeFileSync('structstyle.csv', csv);
+                console.log("File has been saved.");
+                res.send(prettyJson);
+            } catch (error) {
+                console.error(err);
+            }
+        });
+    });
+});
+
+app.get('/structstyleCSV', function(req, res){
+    console.log("downloading csv from "+__dirname+'/structstyle.csv');
+   
+    res.sendFile(__dirname+'/structstyle.csv', function (err) {
+    if (err) {
+      next(err);
+    } else {
+      console.log('Sent!');
+    }
+  });
+});
+
+app.get('/yearPrice', async function(req, res){
+    console.log(`Get yearPrice Request: ${JSON.stringify(req.query)}`)
+    const uri = process.env.uri;
+    const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+    // Connect the client to the server
+    await mclient.connect();
+    // Establish and verify connection
+    const database = mclient.db("Lab6");
+    const collection = database.collection("listings");
+    console.log("Connected successfully to listings");
+
+    const projection = { yearbuilt: 1, full_marke: 1 };
+    await collection.find().project(projection).toArray(function(err, etl_results) {
+        const prettyJson = JSON.stringify(etl_results, null, 4);
+        console.log("Found data ");
+        converter.json2csv(etl_results, (err, csv) => {
+            if (err) {
+                console.error(err);
+            }
+
+            // store CSV file
+            try {
+                fs.writeFileSync('yearPrice.csv', csv);
+                console.log("File has been saved.");
+                res.send(prettyJson);
+            } catch (error) {
+                console.error(err);
+            }
+        });
+    });
+});
+
+app.get('/yearPriceCSV', function(req, res){
+    console.log("downloading csv from "+__dirname+'/yearPrice.csv');
+   
+    res.sendFile(__dirname+'/yearPrice.csv', function (err) {
+    if (err) {
+      next(err);
+    } else {
+      console.log('Sent!');
+    }
+  });
 });
