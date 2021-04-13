@@ -1,8 +1,12 @@
 // server init + mods
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config(); //loads connection URI from .env
+
+
+app.use(express.static(__dirname + '/subleasing/dist/subleasing'));
 
 //functions provided by mongodb documentation and atlas
 //https://developer.mongodb.com/quickstart/node-crud-tutorial/
@@ -61,10 +65,10 @@ async function main(){
     }
 }
 
-main().catch(console.error);
+//main().catch(console.error);
 // server route handler
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/subleasing/src/index.html');
+  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });
 
 

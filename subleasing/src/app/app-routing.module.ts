@@ -18,6 +18,7 @@ const routes: Routes = [
   {path: 'renterpage', component: RenterViewComponent},
   {path: 'login', component: LandingComponent},
   {path: 'datavis', component: DatavisComponent},
+  {path: '', component: ListingsComponent},
 ];
 
 @NgModule({

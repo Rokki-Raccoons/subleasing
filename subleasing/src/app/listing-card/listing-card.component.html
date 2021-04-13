@@ -3,6 +3,7 @@
     <div class="card text-left" (pointerenter)="showStar($event.target)" (pointerleave)="hideStar($event.target)" >
       <div class="card-header d-flex justify-content-between" >
         <h4 class="ml-auto mt-3 mb-0" id="location">{{address}}</h4>
+        <h4 class="ml-auto mt-3 mb-0" id="location">{{favoriteStatus}}</h4>
         <form action="PUT REQUEST TO TOGGLE FAV STATUS">
           <i class="bi-star favorite" type="submit" style="font-size: 2rem; visibility: hidden" alt="favorite button" (click)="favClick($event.target)"></i>
         </form>
@@ -24,3 +25,7 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  console.log("got one boys");
+</script>

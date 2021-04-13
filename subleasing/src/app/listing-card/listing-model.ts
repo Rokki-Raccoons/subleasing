@@ -6,5 +6,6 @@ export class ListingModel {
     public beds: number,
     public baths: number,
     public details: string,
-    public listingId: number){}
+    public listingId: number,
+    public favoriteStatus: boolean){}
 }

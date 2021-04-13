@@ -42,6 +42,7 @@ export class ListingCardComponent implements OnInit {
   baths = -1.0;
   details = "Other Relevant Details";
   listingId = -1.0;
+  favoriteStatus = false
 
   constructor() { 
     this.listing = {address: "-",
@@ -50,7 +51,8 @@ export class ListingCardComponent implements OnInit {
                     beds: 0,
                     baths: 0,
                     details: "-",
-                    listingId: 0};
+                    listingId: 0,
+                    favoriteStatus: false};
   }
   ngOnInit(): void {
     console.log(this.listing);
@@ -61,6 +63,12 @@ export class ListingCardComponent implements OnInit {
     this.baths = this.listing.baths;
     this.details = this.listing.details;
     this.listingId = this.listing.listingId;
+    this.favoriteStatus = this.listing.favoriteStatus;
+
+    if (this.favoriteStatus){
+      this.favClick(this);
+      this.showStar(this);
+    }
   }
 
   favClick(target: any):void {
