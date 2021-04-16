@@ -1,17 +1,6 @@
 # subleasing
 Code and related artifacts to the student subleasing app
 
-
-
-To use this project, follow the steps below:
-1) create a new project directory
-2) in that directory, create a new angular project
-3) copy the files from this git repository from the top of your project directory (aka the directory from step 1) and replace any existing files in the destination with the new versions from the git repo
-4) from within the angular project directory, run ng "build"
-5) from within the overall project directory, run "npm install" and then "node server"
-6) access http://localhost:3000 from a browser
-7) voila! The project displays itself on the page and you can interact with it
-
 Lab6
 For this lab, the biggest (and most surprising) obstacle that the team ran into was the gathering of the initial data set for our database. Kolby, Aliza, Ted and Deena all looked for various API's or datasets that could be used to gather the information we wanted, but everything found was either useless data, not what we were looking for, or required money to access. In the end, Kolby bit the bullet and just bought a database's worth of information on all of Rensselaer County, NY which ended up being mostly cut out for various reasons anyway.
 
