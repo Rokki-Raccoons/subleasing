@@ -3,9 +3,13 @@
     <div class="card text-left" (pointerenter)="showStar($event.target)" (pointerleave)="hideStar($event.target)" >
       <div class="card-header d-flex justify-content-between" >
         <h4 class="ml-auto mt-3 mb-0" id="location">{{address}}</h4>
-        <h4 class="ml-auto mt-3 mb-0" id="location">{{favoriteStatus}}</h4>
         <form action="PUT REQUEST TO TOGGLE FAV STATUS">
-          <i class="bi-star favorite" type="submit" style="font-size: 2rem; visibility: hidden" alt="favorite button" (click)="favClick($event.target)"></i>
+          <div *ngIf="favoriteStatus; else elseBlock">
+            <i class="bi-star-fill favorite" type="submit" style="font-size: 2rem; visibility: visible;" alt="favorite button" (click)="favClick($event.target)"></i>
+          </div>
+          <ng-template #elseBlock>
+            <i class="bi-star favorite" type="submit" style="font-size: 2rem; visibility: hidden" alt="favorite button" (click)="favClick($event.target)"></i>
+          </ng-template>
         </form>
       </div>
 
@@ -17,7 +21,7 @@
             <p class="ml-auto mb-0 med-font" id="details2">{{beds}} Bed / {{baths}} Bath</p>
 
             <p class="px-2 ml-auto mb-0 med-font" id="details2">{{details}}</p>
-            <a href="#.\apartmentlisting.html" class="mt-3 ml-auto btn bg-color-blue btn-sm">Learn More!</a>
+            <a type="button" class="btn btn-primary" [id]="listingId" data-toggle="modal" data-target="#exampleModal" class="mt-3 ml-auto btn bg-color-blue btn-sm">Learn More!</a>
         </div>
 
       </div>
@@ -26,6 +30,47 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  console.log("got one boys");
-</script>
+<div class="modal fade" [id]="listingId + '-modal'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel">{{address}}</h2>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img [src]="photoRef" id="icon" width="100%" alt="Apartment Listing Photo">
+        <div class="text-left">
+          <div class="row m-0 justify-content-center">
+            <div class="card p-2 m-2 col-auto" id="body-left">
+              <h5 class="col-auto" style="min-width: 150px;" for="fname">Location: </h5>
+              <p class="px-3">{{address}}</p>
+            
+              <h5 class="col-auto" style="min-width: 150px;" for="fname">Price/month: </h5>
+              <p class="px-3">${{price}}</p>
+            
+              <h5 class="col-auto" style="min-width: 150px;" for="lname">Leasure Duration:</h5>
+              <p class="px-3">January 1 - May 22</p>
+            
+              <h5 class="col-auto" style="min-width: 150px;" for="fname">Bed & Bath: </h5>
+              <p class="px-3" style="display: block;">{{beds}} Bed / {{baths}} Bath</p>
+            </div>
+            <div class="card p-2 m-2 col-6" id="body-right">
+              <p>
+                {{details}}
+              </p>
+            </div>
+            
+          </div>
+        
+      </div>
+      </div>
+      <div class="d-flex modal-footer justify-content-center">
+        <button type="button" class="btn bg-color-blue btn-lg" style="width: 80%; max-width: 700px">Contact Lister!</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

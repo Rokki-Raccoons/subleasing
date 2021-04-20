@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {ListingModel} from './listing-model'
 
@@ -8,30 +8,6 @@ import {ListingModel} from './listing-model'
   styleUrls: ['./listing-card.component.css']
 })
 export class ListingCardComponent implements OnInit {
-
-  // @Input() public listing : ListingModel;
-
-  // address = "Default Address";
-  // photoRef = "no photo found";
-  // price = -1.0;
-  // beds = -1.0;
-  // baths = -1.0;
-  // details = "Other Relevant Details";
-  // listingId = -1.0;
-
-  // constructor(private route: ActivatedRoute) { }
-
-
-  // ngOnInit(): void {
-  //   this.route.queryParams.subscribe(params=>{
-  //   this.price = params.price;
-  //   this.address = params.address;
-  //   this.beds = params.beds;
-  //   this.baths = params.baths;
-  //   this.details = params.details;
-  // });
-  
-  // }
 
   @Input() public listing : ListingModel;
 
@@ -64,11 +40,11 @@ export class ListingCardComponent implements OnInit {
     this.details = this.listing.details;
     this.listingId = this.listing.listingId;
     this.favoriteStatus = this.listing.favoriteStatus;
+  }
 
-    if (this.favoriteStatus){
-      this.favClick(this);
-      this.showStar(this);
-    }
+  ngAfterViewInit(): void{
+    var modal = document.getElementById(this.listingId.toString());
+    modal!.setAttribute("data-target", "#"+this.listingId+'-modal'); 
   }
 
   favClick(target: any):void {
