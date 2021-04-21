@@ -2,9 +2,9 @@
   <div class="container mt-3" style="max-width: 350px; min-width: 300px;">
     <div class="card text-left" (pointerenter)="showStar($event.target)" (pointerleave)="hideStar($event.target)" >
       <div class="card-header d-flex justify-content-between" >
-        <h4 class="ml-auto mt-3 mb-0" id="location">{{address}}</h4>
+        <h4 class="ml-auto mt-3 mb-0" id="location">{{listing.address}}</h4>
         <form action="PUT REQUEST TO TOGGLE FAV STATUS">
-          <div *ngIf="favoriteStatus; else elseBlock">
+          <div *ngIf="listing.favoriteStatus; else elseBlock">
             <i class="bi-star-fill favorite" type="submit" style="font-size: 2rem; visibility: visible;" alt="favorite button" (click)="favClick($event.target)"></i>
           </div>
           <ng-template #elseBlock>
@@ -14,14 +14,14 @@
       </div>
 
       <div class="card-body p-0">
-        <img [src]="photoRef" id="icon" width="100%" alt="Apartment Listing Photo">
+        <img [src]="listing.photoRef" id="icon" width="100%" alt="Apartment Listing Photo">
 
         <div class="p-3">
-            <p class="ml-auto mb-0 med-font" id="details">${{price}}/month</p>
-            <p class="ml-auto mb-0 med-font" id="details2">{{beds}} Bed / {{baths}} Bath</p>
+            <p class="ml-auto mb-0 med-font" id="details">${{listing.price}}/month</p>
+            <p class="ml-auto mb-0 med-font" id="details2">{{listing.beds}} Bed / {{listing.baths}} Bath</p>
 
-            <p class="px-2 ml-auto mb-0 med-font" id="details2">{{details}}</p>
-            <a type="button" class="btn btn-primary" [id]="listingId" data-toggle="modal" data-target="#exampleModal" class="mt-3 ml-auto btn bg-color-blue btn-sm">Learn More!</a>
+            <p class="px-2 ml-auto mb-0 med-font clip-description" id="details2">{{listing.details}}</p>
+            <a type="button" class="btn btn-primary" [id]="listing.listingId" data-toggle="modal" data-target="#exampleModal" class="mt-3 ml-auto btn bg-color-blue btn-sm">Learn More!</a>
         </div>
 
       </div>
@@ -30,35 +30,45 @@
   </div>
 </div>
 
-<div class="modal fade" [id]="listingId + '-modal'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" [id]="listing.listingId + '-modal'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title" id="exampleModalLabel">{{address}}</h2>
+        <h2 class="modal-title" id="exampleModalLabel">{{listing.address}}</h2>
         <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <img [src]="photoRef" id="icon" width="100%" alt="Apartment Listing Photo">
+        <img [src]="listing.photoRef" id="icon" width="100%" alt="Apartment Listing Photo">
         <div class="text-left">
           <div class="row m-0 justify-content-center">
-            <div class="card p-2 m-2 col-auto" id="body-left">
+            <div class="card p-2 m-2 col-6" id="body-left">
               <h5 class="col-auto" style="min-width: 150px;" for="fname">Location: </h5>
-              <p class="px-3">{{address}}</p>
+              <p class="px-3">{{listing.address}}</p>
             
               <h5 class="col-auto" style="min-width: 150px;" for="fname">Price/month: </h5>
-              <p class="px-3">${{price}}</p>
-            
+              <p class="px-3">${{listing.price}}</p>
+
               <h5 class="col-auto" style="min-width: 150px;" for="lname">Leasure Duration:</h5>
-              <p class="px-3">January 1 - May 22</p>
+              <p class="px-3">{{listing.leaseStart}} - {{listing.leaseEnd}}</p>
+            </div>
+            <div class="card p-2 m-2 col-5" id="body-left">
+              <h5 class="col-auto" style="min-width: 150px;" for="fname">Square Footage:</h5>
+              <p class="px-3">{{listing.sqft}}</p>
             
               <h5 class="col-auto" style="min-width: 150px;" for="fname">Bed & Bath: </h5>
-              <p class="px-3" style="display: block;">{{beds}} Bed / {{baths}} Bath</p>
+              <p class="px-3" style="display: block;">{{listing.beds}} Bed / {{listing.baths}} Bath</p>
+
+              <h5 class="col-auto" style="min-width: 150px;" for="fname">Kitchens: </h5>
+              <p class="px-3">{{listing.kitchens}}</p>
+
+              <h5 class="col-auto" style="min-width: 150px;" for="fname">Central Air? </h5>
+              <p class="px-3">{{listing.centralAir}}</p>
             </div>
-            <div class="card p-2 m-2 col-6" id="body-right">
+            <div class="card p-2 m-2 col-12" id="body-right">
               <p>
-                {{details}}
+                {{listing.details}}
               </p>
             </div>
             

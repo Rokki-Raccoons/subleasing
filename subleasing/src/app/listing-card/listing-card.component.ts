@@ -11,40 +11,29 @@ export class ListingCardComponent implements OnInit {
 
   @Input() public listing : ListingModel;
 
-  address = "Default Address";
-  photoRef = "no photo found";
-  price = -1.0;
-  beds = -1.0;
-  baths = -1.0;
-  details = "Other Relevant Details";
-  listingId = -1.0;
-  favoriteStatus = false
-
   constructor() { 
-    this.listing = {address: "-",
-                    photoRef: "no photo",
-                    price: 0,
-                    beds: 0,
-                    baths: 0,
-                    details: "-",
-                    listingId: 0,
+    this.listing = {listingId: -1,
+                    ownerId: -1,
+                    address: "",
+                    price: -1,
+                    photoRef: "",
+                    leaseStart: "",
+                    leaseEnd: "",
+                    details: "",
+                    beds: -1,
+                    baths: -1,
+                    kitchens: -1,
+                    centralAir: false,
+                    sqft: -1,
                     favoriteStatus: false};
   }
   ngOnInit(): void {
     console.log(this.listing);
-    this.address = this.listing.address;
-    this.photoRef = this.listing.photoRef;
-    this.price = this.listing.price;
-    this.beds = this.listing.beds;
-    this.baths = this.listing.baths;
-    this.details = this.listing.details;
-    this.listingId = this.listing.listingId;
-    this.favoriteStatus = this.listing.favoriteStatus;
   }
 
   ngAfterViewInit(): void{
-    var modal = document.getElementById(this.listingId.toString());
-    modal!.setAttribute("data-target", "#"+this.listingId+'-modal'); 
+    var modal = document.getElementById(this.listing.listingId.toString());
+    modal!.setAttribute("data-target", "#"+this.listing.listingId+'-modal'); 
   }
 
   favClick(target: any):void {
