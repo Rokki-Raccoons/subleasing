@@ -79,3 +79,9 @@ body {
 .navbar-collapse.collapse.in {
   display: block!important;
 }
+
+.clip-description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; 
+}
