@@ -77,6 +77,7 @@ app.get('/searchListings', async function(req, res){
   console.log(`Get Request: ${JSON.stringify(req.query)}`)
   var searchtext = req.query.searchText;
   var page = req.query.page;
+  console.log("search: "+searchtext+" page: "+page);
 
   if (page == undefined){ page=0; }
 
@@ -90,11 +91,11 @@ app.get('/searchListings', async function(req, res){
   const listings = database.collection("Listings");
   console.log("Connected successfully to Listings");
 
-  listings.createIndex({Address: "text", Details: "text"});
+  listings.createIndex({address: "text", details: "text"});
 
   var query;
   var sort;
-  if (searchtext == undefined){ 
+  if (searchtext == undefined || searchtext == ""){ 
     query = {}; 
     sort = {};
   }
@@ -103,11 +104,13 @@ app.get('/searchListings', async function(req, res){
     sort = { score: { $meta: "textScore" } };
   }
   const limit = 4;
-
-  await listings.find(query).sort(sort).limit(limit).skip(page*limit).toArray(function(err, etl_results) {
+  const cursor = listings.find(query).sort(sort);
+  const count = await cursor.count();
+  await cursor.limit(limit).skip(page*limit).toArray(function(err, etl_results) {
     const prettyJson = JSON.stringify(etl_results);
-    console.log("Found data: "+prettyJson);
-    res.send(etl_results);
+    //console.log("Found data: "+prettyJson);
+    console.log("Found "+count+" data documents");
+    res.send({'count':count, 'limitedData':etl_results});
   });
 });
 

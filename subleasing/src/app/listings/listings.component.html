@@ -2,10 +2,10 @@
 
     <div class="row justify-content-center align-items-center">
       <h1 class="mx-3 col-auto ">Listings</h1>
-      <form class="form-inline col-auto">
+      <form #searchForm="ngForm" class="form-inline col-auto">
         <div class="d-flex justify-content-center">
-          <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="max-width: 260px; min-width: 50px">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          <input class="form-control" type="search" name="searchForm" placeholder="Search" aria-label="Search" style="max-width: 260px; min-width: 50px" [(ngModel)]="search.searchBody">
+          <button class="btn btn-outline-success" (click)="searchListings()" type="submit">Search</button>
         </div>
       </form>
     </div>
@@ -14,6 +14,11 @@
       <app-listing-card *ngFor="let l of listings; index as i; first as isFirst" class="col" [listing]='l'></app-listing-card> 
     </div>
 
+    <div class="mx-auto p-4 text-center col-6 col-md " style="width: 500px">
+      <button (click)="prevPage()" type="submit" class="btn btn-danger my-2" id="prevButton" disabled style="width: 20%">< Prev</button>
+      <small> {{pageNumber+1}}/{{maxPage+1}} </small>
+      <button (click)="nextPage()" id="nextButton" type="submit" class="btn btn-danger my-2" disabled style="width: 20%">Next ></button>
+    </div>
 
      <br>
      <h2 class = "d-flex justify-content-center"> Saved Listings </h2>
