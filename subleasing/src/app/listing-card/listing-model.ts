@@ -1,12 +1,12 @@
 export class ListingModel {
   constructor(
-    public listingId: number,
+    public _id: number,
     public ownerId: number,
     public address: string,
     public price: number,
     public photoRef: string,
-    public leaseStart: string,
-    public leaseEnd: string,
+    public startLease: string,
+    public endLease: string,
     public details: string,
     public beds: number,
     public baths: number,

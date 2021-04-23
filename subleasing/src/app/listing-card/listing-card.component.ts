@@ -12,13 +12,13 @@ export class ListingCardComponent implements OnInit {
   @Input() public listing : ListingModel;
 
   constructor() { 
-    this.listing = {listingId: -1,
+    this.listing = {_id: -1,
                     ownerId: -1,
                     address: "",
                     price: -1,
                     photoRef: "",
-                    leaseStart: "",
-                    leaseEnd: "",
+                    startLease: "",
+                    endLease: "",
                     details: "",
                     beds: -1,
                     baths: -1,
@@ -32,8 +32,8 @@ export class ListingCardComponent implements OnInit {
   }
 
   ngAfterViewInit(): void{
-    var modal = document.getElementById(this.listing.listingId.toString());
-    modal!.setAttribute("data-target", "#"+this.listing.listingId+'-modal'); 
+    var modal = document.getElementById(this.listing._id.toString());
+    modal!.setAttribute("data-target", "#"+this.listing._id+'-modal'); 
   }
 
   favClick(target: any):void {

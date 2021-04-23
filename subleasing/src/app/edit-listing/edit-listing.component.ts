@@ -15,13 +15,13 @@ export class EditListingComponent implements OnInit {
   @Input() public editor : ListingModel;
 
   constructor(private route: ActivatedRoute) {
-    this.editor = {listingId: -1,
+    this.editor = {_id: -1,
                     ownerId: -1,
                     address: "",
                     price: -1,
                     photoRef: "",
-                    leaseStart: "",
-                    leaseEnd: "",
+                    startLease: "",
+                    endLease: "",
                     details: "",
                     beds: -1,
                     baths: -1,

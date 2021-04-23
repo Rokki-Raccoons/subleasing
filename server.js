@@ -73,6 +73,43 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });
 
+app.get('/searchListings', async function(req, res){
+  console.log(`Get Request: ${JSON.stringify(req.query)}`)
+  var searchtext = req.query.searchText;
+  var page = req.query.page;
+
+  if (page == undefined){ page=0; }
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  console.log("Connected successfully to Listings");
+
+  listings.createIndex({Address: "text", Details: "text"});
+
+  var query;
+  var sort;
+  if (searchtext == undefined){ 
+    query = {}; 
+    sort = {};
+  }
+  else { 
+    query = {$text: {$search: "\""+searchtext+"\""} }; 
+    sort = { score: { $meta: "textScore" } };
+  }
+  const limit = 4;
+
+  await listings.find(query).sort(sort).limit(limit).skip(page*limit).toArray(function(err, etl_results) {
+    const prettyJson = JSON.stringify(etl_results);
+    console.log("Found data: "+prettyJson);
+    res.send(etl_results);
+  });
+});
 
 // start server
 http.listen(3000, function(){
@@ -80,6 +117,13 @@ http.listen(3000, function(){
 });
 
 
+
+
+
+
+
+
+//****** Things below this line are for data visulaization AKA lab 6 content ******//
 app.get('/structures', async function(req, res){
     console.log(`Get Structures Request: ${JSON.stringify(req.query)}`)
     const uri = process.env.uri;
