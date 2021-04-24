@@ -13,6 +13,7 @@ import { ListingsComponent } from './listings/listings.component';
 import { RenterViewComponent } from './renter-view/renter-view.component';
 import { LandingComponent } from './landing/landing.component';
 import { DatavisComponent } from './datavis/datavis.component';
+import { PathErrorPageComponent } from './path-error-page/path-error-page.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DatavisComponent } from './datavis/datavis.component';
     ListingsComponent,
     RenterViewComponent,
     LandingComponent,
-    DatavisComponent
+    DatavisComponent,
+    PathErrorPageComponent
   ],
   imports: [
     BrowserModule,
