@@ -13,16 +13,37 @@ import {NgForm} from '@angular/forms';
 export class ListingsComponent implements OnInit {
 
   URL = "http://localhost:3000/searchListings";
+  favURL = "http://localhost:3000/favorites";
   listings: Array<ListingModel> = [];
-  saved: Array<ListingModel> = [];
+  favListings: Array<ListingModel> = [];
   pageNumber = 0;
   maxPage = -1;
   search = new SearchModel("");
+  noDocumentsFound = "No results found";
+  user = "607fca1679c613ca848cd72c"; // hardcoded for now, I will figure out how to
+                                     // fix that when Kolby finishes auth stuff
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.getListings();
+    this.populateData();
+  }
+
+  public populateData(){
+    const headers = { 'content-type': 'application/json'};
+    const options = {'headers':headers, 'params':{'user':this.user}};
+    this.listings = [];
+
+    this.http.get(this.favURL, options).subscribe((data) => {
+      var results = (data as any);  // want to make sure favorites is saved before making the  
+      for (var i = 0; i < results.length; ++i) {
+        var newData = results[i];
+        newData["favoriteStatus"] = true;
+        this.favListings.push(newData);
+      }
+      //console.log(this.favListings);
+      this.getListings();      
+    });
   }
 
   public getListings(){
@@ -37,10 +58,19 @@ export class ListingsComponent implements OnInit {
       for (var i = 0; i < results.limitedData.length; ++i) {
         var newData = results.limitedData[i];
         newData["favoriteStatus"] = false;
+        if (this.checkFavStatus(this.favListings, newData)){
+          newData["favoriteStatus"] = true;
+        }
         this.listings.push(newData);
       }
       console.log(this.listings);
       console.log("page "+this.pageNumber+"/"+this.maxPage);
+      if (results.limitedData.length == 0){
+        this.noDocumentsFound = "No results found";
+      }
+      else {
+        this.noDocumentsFound = "";
+      }
       if (this.pageNumber <= 0){
         document.getElementById("prevButton")!.setAttribute("disabled","true");
         console.log("prev is disabled");
@@ -58,7 +88,6 @@ export class ListingsComponent implements OnInit {
         console.log("next is enabled");
       }
     });
-
   }
 
   public prevPage(){
@@ -78,6 +107,13 @@ export class ListingsComponent implements OnInit {
   public searchListings(){
     this.pageNumber = 0;
     this.getListings();
+  }
+
+
+  private checkFavStatus(arr:Array<ListingModel>, val:ListingModel) {
+    return arr.some(function(arrVal) {
+      return val._id == arrVal._id;
+    });
   }
 
 }

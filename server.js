@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
 require('dotenv').config(); //loads connection URI from .env
 
 const converter = require('json-2-csv');
@@ -73,6 +74,48 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });
 
+app.get('/favorites', async function(req, res){
+  console.log(`Get Request: ${JSON.stringify(req.query)}`)
+  var user = req.query.user;
+  console.log("user: "+user);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const favorites = database.collection("Favorites");
+  console.log("Connected successfully to Favorites");
+
+  var query = {userId: user};
+  const projection = { listingId: 1 };
+  
+  const cursor = favorites.find(query).project(projection);
+  const count = await cursor.count();
+  console.log("Found "+count+" favorite listings");
+
+  const listings = database.collection("Listings");
+  console.log("Connected successfully to Listings");
+
+  var results = [];
+
+  await cursor.toArray(async function(err, fav_results) {
+    for (var i = 0; i < fav_results.length; i++) {
+      favId = fav_results[i]['listingId'];
+      query = {"_id": ObjectId.createFromHexString(favId)};
+      //console.log("querying Listings for "+query["_id"]);
+      newListing = await listings.findOne(query);
+      results.push(newListing);
+    }
+
+    const prettyJson = JSON.stringify(results);
+    //console.log("Found fav listings: "+prettyJson);
+    res.send(results);
+  });
+});
+
 app.get('/searchListings', async function(req, res){
   console.log(`Get Request: ${JSON.stringify(req.query)}`)
   var searchtext = req.query.searchText;
@@ -100,7 +143,7 @@ app.get('/searchListings', async function(req, res){
     sort = {};
   }
   else { 
-    query = {$text: {$search: "\""+searchtext+"\""} }; 
+    query = {$text: {$search: searchtext} }; 
     sort = { score: { $meta: "textScore" } };
   }
   const limit = 4;

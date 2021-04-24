@@ -11,18 +11,18 @@
     </div>
 
     <div class="row">
+      <p class="w-100 text-center my-2">{{noDocumentsFound}}</p>
       <app-listing-card *ngFor="let l of listings; index as i; first as isFirst" class="col" [listing]='l'></app-listing-card> 
     </div>
 
     <div class="mx-auto p-4 text-center col-6 col-md " style="width: 500px">
       <button (click)="prevPage()" type="submit" class="btn btn-danger my-2" id="prevButton" disabled style="width: 20%">< Prev</button>
-      <small> {{pageNumber+1}}/{{maxPage+1}} </small>
+      <small> Page {{pageNumber+1}} of {{maxPage+1}} </small>
       <button (click)="nextPage()" id="nextButton" type="submit" class="btn btn-danger my-2" disabled style="width: 20%">Next ></button>
     </div>
 
-     <br>
-     <h2 class = "d-flex justify-content-center"> Saved Listings </h2>
-     <div class="d-flex flex-row">
-
-        <app-listing-card class="col" [listing]='{_id: 123456, ownerId: 1,address: "Example address 5", price: 340,photoRef: "assets\\images\\apartment.jpg",startLease: "1999-01-01",endLease: "1999-05-01",details: "Example Details 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam euismod quam quis eros consectetur, vitae consectetur massa condimentum. Nunc sit amet turpis dignissim nibh suscipit finibus id sagittis dolor. Fusce quis risus et risus congue euismod. Donec et dui suscipit, aliquam odio ac, semper nisi. Vestibulum scelerisque sed sapien ut sodales. In sit amet congue massa. Praesent sed est semper, auctor sapien eget, varius purus. Nunc tempor ligula vitae turpis vehicula lacinia.", beds: 4,baths: 1,kitchens: 1,centralAir: false,sqft: 1500,favoriteStatus: true}'></app-listing-card>
+    <br>
+    <h2 class = "d-flex justify-content-center"> Saved Listings </h2>
+    <div class="d-flex flex-row">
+      <app-listing-card *ngFor="let l of favListings; index as i; first as isFirst" class="col" [listing]='l'></app-listing-card> 
     </div>
