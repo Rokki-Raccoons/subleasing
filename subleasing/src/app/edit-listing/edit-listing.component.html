@@ -74,7 +74,7 @@
         <label class="col-auto" style="min-width: 150px;" for="description">Other Info: </label>
         <textarea class="col form-control" name="description" id="description" [(ngModel)]="editor.details">{{editor.details}}</textarea>
       </div>
-      <input class="btn bg-color-dark-blue" type="submit" (click)="saveChanges()" value="Save Edits">
+      <input class="btn bg-color-dark-blue" type="submit" (click)="saveChanges()" value="Save Edits" id="saveButton">
 
     </form>
   </div>

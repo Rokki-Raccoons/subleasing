@@ -30,6 +30,7 @@ export class RenterViewComponent implements OnInit {
   public getOwnedPropertiesData(){
     const headers = { 'content-type': 'application/json'};
     const options = {'headers':headers, 'params':{'user':this.user}};
+    this.listings = [];
 
     this.http.get(this.URL, options).subscribe((data) => {
       var results = (data as any);
@@ -56,11 +57,18 @@ export class RenterViewComponent implements OnInit {
 
   public chooseListingToDelete(target: any):void {
     var t = (target as HTMLElement);
-  }
+    var tempListing = this.listings[parseInt(t.id)];
+    const headers = { 'content-type': 'application/json'};
+    const options = {'headers':headers, 'params':{'_id':tempListing._id.toString()}};
 
-  public back():void{
-    this.chosenListing._id = -1;
-    this.getOwnedPropertiesData();
+    console.log("DELETE options:"+JSON.stringify(options));
+    this.http.delete(this.URL, options).subscribe((data) => {
+      var results = (data as any);
+      console.log("delete request returned: "+JSON.stringify(results));
+      this.chosenListing._id = -1;
+      this.getOwnedPropertiesData();
+      location.reload();
+    }); 
   }
 
   public createNew():void {
@@ -72,5 +80,10 @@ export class RenterViewComponent implements OnInit {
       console.log("post request returned: "+JSON.stringify(results));
       this.chosenListing = results;
     });
+  }
+
+  public back():void{
+    this.chosenListing._id = -1;
+    this.getOwnedPropertiesData();
   }
 }

@@ -49,12 +49,17 @@ export class EditListingComponent implements OnInit {
       var results = (data as any);
       console.log("put request successful: "+JSON.stringify(results));
 
-      `<div class="alert alert-success fade show" style="display:inline;"role="alert">
+      var alertHTML = `<div class="alert alert-success fade show" style="display:inline;"role="alert" id="alertBox">
         Saved!
         <button type="button" class="close btn-sm alert-success" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>`
+      </div>`;
+
+      var alertElem = document.getElementById("alertBox");
+      if (alertElem == null){
+        document.getElementById("saveButton")!.insertAdjacentHTML('afterend', alertHTML);
+      }
     });
   }
 }
