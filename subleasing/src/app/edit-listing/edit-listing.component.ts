@@ -14,9 +14,11 @@ export class EditListingComponent implements OnInit {
 
   @Input() public editor : ListingModel;
 
-  constructor(private route: ActivatedRoute) {
+  URL = "http://localhost:3000/ownedListings";
+
+  constructor(private http: HttpClient) {
     this.editor = {_id: -1,
-                    ownerId: -1,
+                    ownerID: "-1",
                     address: "",
                     price: -1,
                     photoRef: "",
@@ -32,17 +34,27 @@ export class EditListingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      // this.route.queryParams.subscribe(params=>{
-      // this.price = params.price;
-      // this.address = params.address;
-      // this.link = params.link;
-
-      console.log(this.editor);
-   
+    console.log(this.editor);
   }
 
-  checkChange(): void{
+  public checkChange(): void{
     this.editor.centralAir = !this.editor.centralAir;
   }
 
+  public saveChanges(): void{
+    const body = this.editor;
+    console.log("Updating listing "+JSON.stringify(body));
+    const headers = { 'content-type': 'application/json'};
+    this.http.put(this.URL, body, {'headers':headers}).subscribe((data) => {
+      var results = (data as any);
+      console.log("put request successful: "+JSON.stringify(results));
+
+      `<div class="alert alert-success fade show" style="display:inline;"role="alert">
+        Saved!
+        <button type="button" class="close btn-sm alert-success" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`
+    });
+  }
 }

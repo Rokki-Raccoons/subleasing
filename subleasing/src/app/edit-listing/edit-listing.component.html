@@ -74,15 +74,9 @@
         <label class="col-auto" style="min-width: 150px;" for="description">Other Info: </label>
         <textarea class="col form-control" name="description" id="description" [(ngModel)]="editor.details">{{editor.details}}</textarea>
       </div>
-      <input class="btn bg-color-dark-blue" type="submit" value="Save Edits">
+      <input class="btn bg-color-dark-blue" type="submit" (click)="saveChanges()" value="Save Edits">
+
     </form>
   </div>
 
 </div>
-<!-- 
-<div *ngIf="listing.favoriteStatus; else elseBlock">
-            <i class="bi-star-fill favorite" type="submit" style="font-size: 2rem; visibility: visible;" alt="favorite button" (click)="favClick($event.target)"></i>
-          </div>
-          <ng-template #elseBlock>
-            <i class="bi-star favorite" type="submit" style="font-size: 2rem; visibility: hidden" alt="favorite button" (click)="favClick($event.target)"></i>
-          </ng-template> -->

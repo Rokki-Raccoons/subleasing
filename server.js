@@ -2,6 +2,7 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
+const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 require('dotenv').config(); //loads connection URI from .env
@@ -9,6 +10,9 @@ require('dotenv').config(); //loads connection URI from .env
 const converter = require('json-2-csv');
 const fs = require('fs');
 
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/subleasing/dist/subleasing'));
 
 //functions provided by mongodb documentation and atlas
@@ -157,12 +161,103 @@ app.get('/searchListings', async function(req, res){
   });
 });
 
+app.get('/ownedListings', async function(req, res){
+  console.log(`Get Request: ${JSON.stringify(req.query)}`);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  console.log("Connected successfully to Listings");
+
+  const query = {ownerID: req.query.user};
+  const cursor = listings.find(query);
+  const count = await cursor.count();
+  await cursor.toArray(function(err, etl_results) {
+    const prettyJson = JSON.stringify(etl_results);
+    console.log("Found "+count+" pieces of data: "+prettyJson);
+    res.send(etl_results);
+  });
+
+});
+
+app.post('/ownedListings', async function(req, res){
+  var newData = req.body;
+  delete newData._id;
+  console.log(`Post Request: ${JSON.stringify(newData)}`);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  console.log("Connected successfully to Listings");
+
+  inserted = await listings.insertOne(newData).catch(e => {
+    console.log(e);
+  });
+  console.log("inserted "+JSON.stringify(inserted.ops)+" document into the Listings collection");
+  res.send(inserted.ops);
+});
+
+app.put('/ownedListings', async function(req, res){
+  var newData = req.body;
+  console.log(`Update Request: ${JSON.stringify(newData)}`);
+  console.log(`Update Query for ID: ${newData._id}`);
+  const query = {"_id": ObjectId.createFromHexString(newData._id)};
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  console.log("Connected successfully to Listings"); 
+  delete newData._id;
+
+  const options = {
+    // create a document if no documents match the query
+    upsert: true,
+  };
+  const result = await listings.replaceOne(query, newData, options);
+  res.send(result.result);
+});
+
+app.delete('/ownedListings', async function(req, res){
+  const query = {"_id": ObjectId.createFromHexString(req.body._id)};
+  console.log(`Delete Request: ${JSON.stringify(query)}`);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  console.log("Connected successfully to Listings");
+
+  const result = await listings.deleteOne(query);
+  res.send(result.result);
+});
+
 // start server
 http.listen(3000, function(){
   console.log('Server up on *:3000');
 });
 
-
+app.get('/renterpage', function(req, res){
+  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
+});
 
 
 
