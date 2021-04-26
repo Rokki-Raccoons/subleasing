@@ -4,8 +4,8 @@
     <div class="col-8">
       <h1 class="mx-1"> Property Page </h1>
 
-      <app-edit-listing [editor]='{_id: 1234, ownerId: 4,address: "Example address 4", price: 300,photoRef: "assets\\images\\apartment.jpg",startLease: "1999-01-01",endLease: "1999-05-01",details: "Example Details 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam euismod quam quis eros consectetur, vitae consectetur massa condimentum. Nunc sit amet turpis dignissim nibh suscipit finibus id sagittis dolor. Fusce quis risus et risus congue euismod. Donec et dui suscipit, aliquam odio ac, semper nisi. Vestibulum scelerisque sed sapien ut sodales. In sit amet congue massa. Praesent sed est semper, auctor sapien eget, varius purus. Nunc tempor ligula vitae turpis vehicula lacinia.", beds: 6,baths: 2,kitchens: 1,centralAir: false,sqft: 1000,favoriteStatus: false}'></app-edit-listing>  
-      
+      <app-edit-listing [editor]='{_id: 1234, ownerId: 4,address: "Example address 4", price: 300,photoRef: "assets\\images\\apartment.jpg",startLease: "1999-01-01",endLease: "1999-05-01",details: "Example Details 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam euismod quam quis eros consectetur, vitae consectetur massa condimentum. Nunc sit amet turpis dignissim nibh suscipit finibus id sagittis dolor. Fusce quis risus et risus congue euismod. Donec et dui suscipit, aliquam odio ac, semper nisi. Vestibulum scelerisque sed sapien ut sodales. In sit amet congue massa. Praesent sed est semper, auctor sapien eget, varius purus. Nunc tempor ligula vitae turpis vehicula lacinia.", beds: 6,baths: 2,kitchens: 1,centralAir: false,sqft: 1000,favoriteStatus: false}'></app-edit-listing>
+
 
     </div>
     <div class="col">
@@ -18,15 +18,16 @@
           <app-message-box [message]='{senderName: "Bob2",senderID: 12346, messageBody: "Hi! Im interested in your property. Will you contact me?", messageID: 2}'></app-message-box>
           <app-message-box [message]='{senderName: "Bob3",senderID: 12347, messageBody: "Hi! Im interested in your property. Will you contact me?", messageID: 3}'></app-message-box>
 
-          <form class="p-2">
+          <form class="p-2" >
             <div class="form-group">
               <label for="defaultMessage">Default message to users:</label>
-              <textarea class="form-control mb-1" id="defaultMessage">Hi! You can contact me at 800-222-1222 or by email at example@gmail.com</textarea>
+              <textarea type="text" name = "msgToSave" class="form-control mb-1" id="defaultMessage" [formControl]="msg" placeholder = "Hi! You can contact me at 800-222-1222 or by email at example@gmail.com"></textarea>
             </div>
-            <input class="btn btn-sm bg-color-dark-blue" type="submit" value="Save Message">
+            <button class="btn btn-sm bg-color-dark-blue" type="submit" (click) = "saveMsg()">Save Message</button>
           </form>
+
         </div>
-        
+
       </div>
     </div>
   </div>
