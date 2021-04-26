@@ -2,12 +2,17 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
+const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
 require('dotenv').config(); //loads connection URI from .env
 
 const converter = require('json-2-csv');
 const fs = require('fs');
 
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/subleasing/dist/subleasing'));
 
 //functions provided by mongodb documentation and atlas
@@ -73,6 +78,176 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });
 
+app.get('/favorites', async function(req, res){
+  console.log(`Get Request: ${JSON.stringify(req.query)}`)
+  var user = req.query.user;
+  //console.log("user: "+user);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const favorites = database.collection("Favorites");
+  //console.log("Connected successfully to Favorites");
+
+  var query = {userId: user};
+  const projection = { listingId: 1 };
+  
+  const cursor = favorites.find(query).project(projection);
+  const count = await cursor.count();
+  console.log("Found "+count+" favorite listings");
+
+  const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings");
+
+  var results = [];
+
+  await cursor.toArray(async function(err, fav_results) {
+    for (var i = 0; i < fav_results.length; i++) {
+      favId = fav_results[i]['listingId'];
+      query = {"_id": ObjectId.createFromHexString(favId)};
+      //console.log("querying Listings for "+query["_id"]);
+      newListing = await listings.findOne(query);
+      results.push(newListing);
+    }
+
+    const prettyJson = JSON.stringify(results);
+    //console.log("Found fav listings: "+prettyJson);
+    res.send(results);
+  });
+});
+
+app.get('/searchListings', async function(req, res){
+  console.log(`Get Request: ${JSON.stringify(req.query)}`)
+  var searchtext = req.query.searchText;
+  var page = req.query.page;
+  //console.log("search: "+searchtext+" page: "+page);
+
+  if (page == undefined){ page=0; }
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings");
+
+  listings.createIndex({address: "text", details: "text"});
+
+  var query;
+  var sort;
+  if (searchtext == undefined || searchtext == ""){ 
+    query = {}; 
+    sort = {};
+  }
+  else { 
+    query = {$text: {$search: searchtext} }; 
+    sort = { score: { $meta: "textScore" } };
+  }
+  const limit = 4;
+  const cursor = listings.find(query).sort(sort);
+  const count = await cursor.count();
+  await cursor.limit(limit).skip(page*limit).toArray(function(err, etl_results) {
+    const prettyJson = JSON.stringify(etl_results);
+    //console.log("Found data: "+prettyJson);
+    console.log("Found "+count+" data documents");
+    res.send({'count':count, 'limitedData':etl_results});
+  });
+});
+
+app.get('/ownedListings', async function(req, res){
+  console.log(`Get Request: ${JSON.stringify(req.query)}`);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings");
+
+  const query = {ownerID: req.query.user};
+  const cursor = listings.find(query);
+  const count = await cursor.count();
+  await cursor.toArray(function(err, etl_results) {
+    const prettyJson = JSON.stringify(etl_results);
+    console.log("Found "+count+" pieces of data");
+    res.send(etl_results);
+  });
+
+});
+
+app.post('/ownedListings', async function(req, res){
+  var newData = req.body;
+  delete newData._id;
+  console.log(`Post Request: ${JSON.stringify(newData)}`);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings");
+
+  inserted = await listings.insertOne(newData).catch(e => {
+    console.log(e);
+  });
+  console.log("inserted document into the Listings collection");
+  res.send(inserted.ops);
+});
+
+app.put('/ownedListings', async function(req, res){
+  var newData = req.body;
+  console.log(`Update Request: ${JSON.stringify(newData)}`);
+  const query = {"_id": ObjectId.createFromHexString(newData._id)};
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings"); 
+  delete newData._id;
+
+  const options = {
+    // create a document if no documents match the query
+    upsert: true,
+  };
+  const result = await listings.replaceOne(query, newData, options);
+  res.send(result.result);
+});
+
+app.delete('/ownedListings', async function(req, res){
+  const query = {"_id": ObjectId.createFromHexString(req.query._id)};
+  console.log(`Delete Request: ${JSON.stringify(query)}`);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings");
+
+  const result = await listings.deleteOne(query);
+  res.send(result.result);
+});
 
 // start server
 http.listen(3000, function(){
@@ -80,6 +255,12 @@ http.listen(3000, function(){
 });
 
 
+
+
+
+
+
+//****** Things below this line are for data visulaization AKA lab 6 content ******//
 app.get('/structures', async function(req, res){
     console.log(`Get Structures Request: ${JSON.stringify(req.query)}`)
     const uri = process.env.uri;
