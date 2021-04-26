@@ -13,7 +13,7 @@ export class ListingCardComponent implements OnInit {
 
   constructor() { 
     this.listing = {_id: -1,
-                    ownerId: -1,
+                    ownerID: "-1",
                     address: "",
                     price: -1,
                     photoRef: "",
