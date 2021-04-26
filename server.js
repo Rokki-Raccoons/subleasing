@@ -254,9 +254,6 @@ http.listen(3000, function(){
   console.log('Server up on *:3000');
 });
 
-app.get('/renterpage', function(req, res){
-  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
-});
 
 
 
