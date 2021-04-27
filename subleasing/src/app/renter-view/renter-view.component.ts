@@ -1,9 +1,3 @@
-import { Component, OnInit } from '@angular/core';
-import {MessageBoxComponent} from '../message-box/message-box.component'
-import {EditListingComponent} from '../edit-listing/edit-listing.component'
-import {HeaderComponent} from '../header/header.component'
-import { FormControl } from '@angular/forms';
-
 import { Component, OnInit, Input, NgModule } from '@angular/core';
 import {MessageBoxComponent} from '../message-box/message-box.component';
 import {EditListingComponent} from '../edit-listing/edit-listing.component';
