@@ -42,12 +42,7 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });
 
-app.get('/renterpage', function(req, res){
-  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
-});
-app.get('/edit', function(req, res){
-  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
-});
+
 app.get('/favorites', async function(req, res){
   console.log(`Get Request: ${JSON.stringify(req.query)}`)
   var user = req.query.user;
