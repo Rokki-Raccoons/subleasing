@@ -20,8 +20,10 @@ export class ListingsComponent implements OnInit {
   maxPage = -1;
   search = new SearchModel("");
   noDocumentsFound = "No results found";
-  user = "607fca1679c613ca848cd72c"; // hardcoded for now, I will figure out how to
-                                     // fix that when Kolby finishes auth stuff
+
+
+  user = "607fca1679c613ca848cd72e";
+
 
   constructor(private http: HttpClient) { }
 

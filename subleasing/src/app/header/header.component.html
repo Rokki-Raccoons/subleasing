@@ -7,6 +7,10 @@
   </button>
 
   <div class="collapse navbar-collapse justify-content-right" id="navbarSupportedContent">
+    <a class="nav-item nav-link" href="#">
+      <i class="bi-card-list px-1" style="font-size: 1.1rem;" alt="Listings"></i>
+      Search Listings
+    </a>
     <a class="nav-item nav-link" routerLink="/renterpage"  [queryParams]="{}" routerLinkActive="active">
       <i class="bi-house-fill px-1" style="font-size: 1.1rem;" alt="owned properties button"></i>
       My Properties
@@ -26,10 +30,6 @@
     <a *ngIf="authed" class="nav-item nav-link" routerLink="/">
       <i (click) = "logout()" class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="logout button"></i>
       Logout
-    </a>
-    <a class="nav-item nav-link" href="#">
-      <i class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="logout button"></i>
-      Listings (Home)
     </a>
   </div>
 
