@@ -1,30 +1,11 @@
-<app-header></app-header>
+  <app-header></app-header>
 
-<h1 class="mx-1"> Property Page </h1>
-<div *ngIf="chosenListing._id == -1; else elseBlock1">
-  <div *ngIf="noDocumentsFound; else elseBlock2">
-    <h4 class="w-100 text-center my-5">You currently don't have any open listings!</h4>
-  </div>
-  <div class="d-flex flex-row justify-content-center">
-    <input class="btn btn-lg btn-success my-3 mx-5 align-right" type="submit" value="Open New Listing!" (click)="createNew()" >
-  </div>
-  <ng-template #elseBlock2>
-    <div *ngFor="let l of listings; index as i; first as isFirst" class="w-100 my-2" >
-      <input class="btn btn-sm bg-color-dark-blue mx-2 align-middle" type="submit" value="Edit this Listing" [id]="i" (click)="chooseListingToEdit($event.target)">
-      <input class="btn btn-sm btn-danger mx-2 align-middle" type="submit" value="Delete Listing" [id]="i" (click)="chooseListingToDelete($event.target)"> 
-      <h3 class="mx-2 align-middle" style="display: inline;">{{l.address}}</h3>
-    </div>
-  </ng-template>
-</div>
-
-<ng-template #elseBlock1>
-  <input class="btn btn-sm bg-color-dark-blue mx-2 align-middle" type="submit" value="Back to Property List" (click)="back()">
   <div class="row px-2">
     <div class="col-8">
-
       <h1 class="mx-1"> Property Page </h1>
 
-      <app-edit-listing [editor]='chosenListing'></app-edit-listing>  
+      <app-edit-listing [editor]='{_id: 1234, ownerId: 4,address: "Example address 4", price: 300,photoRef: "assets\\images\\apartment.jpg",startLease: "1999-01-01",endLease: "1999-05-01",details: "Example Details 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam euismod quam quis eros consectetur, vitae consectetur massa condimentum. Nunc sit amet turpis dignissim nibh suscipit finibus id sagittis dolor. Fusce quis risus et risus congue euismod. Donec et dui suscipit, aliquam odio ac, semper nisi. Vestibulum scelerisque sed sapien ut sodales. In sit amet congue massa. Praesent sed est semper, auctor sapien eget, varius purus. Nunc tempor ligula vitae turpis vehicula lacinia.", beds: 6,baths: 2,kitchens: 1,centralAir: false,sqft: 1000,favoriteStatus: false}'></app-edit-listing>
+
 
     </div>
     <div class="col">
@@ -50,6 +31,3 @@
       </div>
     </div>
   </div>
-
-</ng-template>
-

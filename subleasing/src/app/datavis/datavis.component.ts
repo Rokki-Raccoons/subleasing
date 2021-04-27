@@ -28,7 +28,7 @@ export class DatavisComponent implements OnInit {
       window.location.href = url;
     });
 
-  } 
+  }
 
   public getYearPriceCSV (){
     const body = JSON.stringify({});

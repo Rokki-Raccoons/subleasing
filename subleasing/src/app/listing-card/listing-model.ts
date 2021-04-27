@@ -1,7 +1,7 @@
 export class ListingModel {
   constructor(
     public _id: number,
-    public ownerID: string,
+    public ownerId: number,
     public address: string,
     public price: number,
     public photoRef: string,
