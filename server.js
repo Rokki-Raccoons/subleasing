@@ -5,6 +5,7 @@ var http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
+const bcrypt = require('bcrypt');
 require('dotenv').config(); //loads connection URI from .env
 
 const converter = require('json-2-csv');
@@ -14,6 +15,12 @@ const fs = require('fs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/subleasing/dist/subleasing'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+
+var loggedIn = false;
+var loggedInUser = "";
 
 //functions provided by mongodb documentation and atlas
 //https://developer.mongodb.com/quickstart/node-crud-tutorial/
@@ -28,9 +35,8 @@ async function listDatabases(client){
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 };
 
-
 async function findOneListingByName(client, nameOfListing) {
-  
+
     const result = await client.db("site").collection("main").findOne({ name: nameOfListing });
     //this queries for a document where the name field = the variable passed in
 
@@ -95,7 +101,7 @@ app.get('/favorites', async function(req, res){
 
   var query = {userId: user};
   const projection = { listingId: 1 };
-  
+
   const cursor = favorites.find(query).project(projection);
   const count = await cursor.count();
   console.log("Found "+count+" favorite listings");
@@ -120,6 +126,145 @@ app.get('/favorites', async function(req, res){
   });
 });
 
+app.get("/addfav/:favid", async function(req,res){
+  // console.log(req)
+  var favId = req.params["favid"];
+  if(loggedIn){
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+
+  const dbresult = await mclient.db("SublettyFinal").collection("Favorites").insertOne({ listingId: favId,  userId: loggedInUser});
+  console.log("fav added to db: " + favId + " for user: " + loggedInUser);
+
+  }
+  // console.log("username: " + un + " pass: " + pw);
+});
+
+app.post("/savemsg", async function(req,res){
+  // console.log(req)
+  console.log('savemsg hit');
+  var favId = req.params["favid"];
+  var msgForDb = req.body.msgToSave;
+  if(loggedIn){
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+
+  // const dbresult = await mclient.db("SublettyFinal").collection("messages").One({ listingId: favId,  userId: loggedInUser});
+  const result = await mclient.db("SublettyFinal").collection("messages").updateOne({ userId: loggedInUser },{msg: msgForDb },{ upsert: true });
+  console.log("msg added to db: " + msgForDb + " for user: " + loggedInUser);
+
+  }
+  // console.log("username: " + un + " pass: " + pw);
+});
+
+app.get("/removefav/:favid", async function(req,res){
+  // console.log(req)
+  var favId = req.params["favid"];
+  if(loggedIn){
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+
+  const dbresult = await mclient.db("SublettyFinal").collection("Favorites").deleteOne({ listingId: favId,  userId: loggedInUser});
+  console.log("fav removed from db: " + favId + " for user: " + loggedInUser);
+
+  }
+  // console.log("username: " + un + " pass: " + pw);
+});
+
+
+
+app.get("/login/:un/:pw", async function(req,res){
+  // console.log(req)
+  var un = req.params["un"];
+  var pw = req.params["pw"];
+
+  console.log("username: " + un + " pass: " + pw);
+
+  bcrypt.hash(pw, 10, async function(err, hash) {
+    // Store hash in your password DB.
+    const uri = process.env.uri;
+    const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+    // Connect the client to the server
+    await mclient.connect();
+
+    const dbresult = await mclient.db("site").collection("users").findOne({ username: un });
+    console.log(hash)
+    console.log(dbresult)
+
+    if(dbresult){
+      bcrypt.compare(pw, dbresult.hash, function(err, result) {
+        if(result){
+          console.log("login succ")
+          loggedIn = true;
+          loggedInUser = dbresult._id;
+          console.log("logged in as " + un + loggedInUser)
+          res.send({statusCode:200});
+        }else{
+            console.log("login fail")
+            res.send({statusCode:401});
+            loggedIn = false;
+            loggedInUser = "";
+          }
+      });
+    }else{
+      console.log("user not found")
+      res.send({statusCode:404});
+      loggedIn = false;
+      loggedInUser = "";
+    }
+
+
+  });
+
+});
+
+app.get("/register/:un/:pw", async function(req,res){
+
+  console.log("register endpoint");
+  var un = req.params["un"];
+  var pw = req.params["pw"];
+
+  console.log("username: " + un + " pass: " + pw);
+
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+
+  const result = await mclient.db("site").collection("users").findOne({ username: un });
+
+  if(result){
+    res.send({statusCode:422})
+  }
+  else{
+    bcrypt.hash(pw, 10, async function(err, hash) {
+      const result2 = await mclient.db("site").collection("users").insertOne({ username: un, hash:hash });
+    });
+    res.send({statusCode:201})
+    loggedInUser = result._id;
+    console.log("logged in as " + un + loggedInUser)
+    loggedIn = true;
+
+  }
+
+});
+
+app.get("/authenticate", function(req,res){
+  console.log("auth endpoint hit");
+  res.status(200).json({"statusCode" : 200 ,"authenticated" : loggedIn});
+});
+
 app.get('/searchListings', async function(req, res){
   console.log(`Get Request: ${JSON.stringify(req.query)}`)
   var searchtext = req.query.searchText;
@@ -142,12 +287,12 @@ app.get('/searchListings', async function(req, res){
 
   var query;
   var sort;
-  if (searchtext == undefined || searchtext == ""){ 
-    query = {}; 
+  if (searchtext == undefined || searchtext == ""){
+    query = {};
     sort = {};
   }
-  else { 
-    query = {$text: {$search: searchtext} }; 
+  else {
+    query = {$text: {$search: searchtext} };
     sort = { score: { $meta: "textScore" } };
   }
   const limit = 4;
@@ -255,11 +400,6 @@ http.listen(3000, function(){
 });
 
 
-
-
-
-
-
 //****** Things below this line are for data visulaization AKA lab 6 content ******//
 app.get('/structures', async function(req, res){
     console.log(`Get Structures Request: ${JSON.stringify(req.query)}`)
@@ -296,7 +436,7 @@ app.get('/structures', async function(req, res){
 
 app.get('/structstyleCSV', function(req, res){
     console.log("downloading csv from "+__dirname+'/structstyle.csv');
-   
+
     res.sendFile(__dirname+'/structstyle.csv', function (err) {
     if (err) {
       next(err);
@@ -341,7 +481,7 @@ app.get('/yearPrice', async function(req, res){
 
 app.get('/yearPriceCSV', function(req, res){
     console.log("downloading csv from "+__dirname+'/yearPrice.csv');
-   
+
     res.sendFile(__dirname+'/yearPrice.csv', function (err) {
     if (err) {
       next(err);
@@ -349,4 +489,12 @@ app.get('/yearPriceCSV', function(req, res){
       console.log('Sent!');
     }
   });
+});
+
+app.get('/listings', function(req, res){
+  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
+});
+
+app.get('/renterpage', function(req, res){
+  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });

@@ -7,17 +7,20 @@ import { LandingComponent } from './landing/landing.component';
 import { DatavisComponent } from './datavis/datavis.component';
 import {PathErrorPageComponent} from './path-error-page/path-error-page.component';
 
+import { AuthGuard } from './auth/auth.guard';
+
 const routes: Routes = [
   {path: 'listings', component: ListingsComponent},
-  {path: 'renterpage', component: RenterViewComponent},
+  {path: 'renterpage', component: RenterViewComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LandingComponent},
-  {path: 'datavis', component: DatavisComponent},
+  {path: 'datavis', component: DatavisComponent, canActivate: [AuthGuard]},
   {path: '', redirectTo: '/listings', pathMatch: 'full'},
-  {path: '**', component: PathErrorPageComponent }, 
+  {path: '**', component: PathErrorPageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers:[AuthGuard]
 })
 export class AppRoutingModule { }
