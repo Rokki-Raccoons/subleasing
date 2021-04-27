@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {MessageModel} from './message-model'
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-message-box',
@@ -12,13 +13,14 @@ export class MessageBoxComponent implements OnInit {
   @Input() public message : MessageModel;
 
   senderName = "None";
-  senderID = -1;
-  messageBody = "-";
+  senderID = "608750b107f1901d008a9ff3";
+  messageBody = "Hi, it's Kolby, I love the property! Let's talk! <phone number>";
   messageID = -1;
+  showButton = true;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private http: HttpClient) {
     this.message = {senderName: "-",
-                    senderID: 0,
+                    senderID: "",
                     messageBody: "-",
                     messageID: 0};
   }
@@ -33,6 +35,13 @@ export class MessageBoxComponent implements OnInit {
     this.senderID = this.message.senderID;
     this.messageBody = this.message.messageBody;
     this.messageID = this.message.messageID;
+    if(this.messageID == 6){
+      this.showButton = false;
+    }
+  }
+
+  contactClient(){
+      this.http.get('/contactClient/' + this.senderID ).subscribe(data => {});
   }
 
 }

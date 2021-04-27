@@ -10,9 +10,8 @@ import {NgForm} from '@angular/forms';
   templateUrl: './listings.component.html',
   styleUrls: ['./listings.component.css']
 })
-
 export class ListingsComponent implements OnInit {
-  
+
   URL = "http://localhost:3000/searchListings";
   favURL = "http://localhost:3000/favorites";
   listings: Array<ListingModel> = [];
@@ -21,17 +20,24 @@ export class ListingsComponent implements OnInit {
   maxPage = -1;
   search = new SearchModel("");
   noDocumentsFound = "No results found";
-  user = "607fca1679c613ca848cd72c"; // hardcoded for now, I will figure out how to
-                                     // fix that when Kolby finishes auth stuff
+
+  user = "607fca1679c613ca848cd72c";
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.populateData();
+    console.log(this.user)
+    this.getUsername();
+
+    setTimeout(() => {
+      console.log("beforepopulate" + this.user)
+      this.populateData();
+    }, 200);
   }
 
   public populateData(){
     const headers = { 'content-type': 'application/json'};
+    this.getUsername();
     const options = {'headers':headers, 'params':{'user':this.user}};
     this.listings = [];
 
@@ -44,6 +50,14 @@ export class ListingsComponent implements OnInit {
       }
       //console.log(this.favListings);
       this.getListings();
+    });
+  }
+
+  public getUsername(){
+    this.http.get('/authenticate').subscribe(data => {
+      var authStatus = (data as any);
+      this.user = authStatus.userid;
+      console.log("getusername "  +  this.user);
     });
   }
 
@@ -109,7 +123,6 @@ export class ListingsComponent implements OnInit {
     this.pageNumber = 0;
     this.getListings();
   }
-
 
   private checkFavStatus(arr:Array<ListingModel>, val:ListingModel) {
     return arr.some(function(arrVal) {

@@ -11,19 +11,19 @@
       <i class="bi-house-fill px-1" style="font-size: 1.1rem;" alt="owned properties button"></i>
       My Properties
     </a>
-    <a class="nav-item nav-link" href="#">
-      <i class="bi-person-fill px-1" style="font-size: 1.1rem;" alt="profile button"></i>
-      John Doe
+    <a class="nav-item nav-link" routerLink="/messages"  href="#">
+      <i class="bi-person-fill px-1" style="font-size: 1.1rem;" alt="profile button">{{usern}}</i>
+
     </a>
     <a class="nav-item nav-link" routerLink="/datavis"  [queryParams]="{}" routerLinkActive="active">
       <i class="bi bi-bar-chart-line-fill px-1" style="font-size: 1.1rem;" alt="visualizations button"></i>
       Visualizations
     </a>
     <a *ngIf="!authed" class="nav-item nav-link" routerLink="/login">
-      <i class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="login button"></i>
+      <i class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="logout button"></i>
       Login
     </a>
-    <a *ngIf="authed" class="nav-item nav-link" routerLink="/">
+    <a (click) = "logout()" *ngIf="authed" class="nav-item nav-link" routerLink="/">
       <i (click) = "logout()" class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="logout button"></i>
       Logout
     </a>
