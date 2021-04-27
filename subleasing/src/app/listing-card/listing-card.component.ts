@@ -11,7 +11,7 @@ export class ListingCardComponent implements OnInit {
 
   @Input() public listing : ListingModel;
 
-  constructor() { 
+  constructor() {
     this.listing = {_id: -1,
                     ownerID: "-1",
                     address: "",
@@ -33,18 +33,26 @@ export class ListingCardComponent implements OnInit {
 
   ngAfterViewInit(): void{
     var modal = document.getElementById(this.listing._id.toString());
-    modal!.setAttribute("data-target", "#"+this.listing._id+'-modal'); 
+    modal!.setAttribute("data-target", "#"+this.listing._id+'-modal');
   }
 
   favClick(target: any):void {
+    var add = true;
     var t = (target as HTMLElement);
     if (t.classList.contains("bi-star-fill")){
       t.classList.remove("bi-star-fill");
       t.classList.add("bi-star");
+      add = false;
     }
     else{
       t.classList.remove("bi-star");
       t.classList.add("bi-star-fill");
+      add = true;
+    }
+    if(add){
+      this.http.get('/addfav/' + this.listing._id).subscribe(data => {});
+    }else{
+      this.http.get('/removefav/' + this.listing._id).subscribe(data => {});
     }
   }
 
