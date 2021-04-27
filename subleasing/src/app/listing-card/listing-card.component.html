@@ -46,7 +46,7 @@
             <div class="card p-2 m-2 col-6" id="body-left">
               <h5 class="col-auto" style="min-width: 150px;" for="fname">Location: </h5>
               <p class="px-3">{{listing.address}}</p>
-
+            
               <h5 class="col-auto" style="min-width: 150px;" for="fname">Price/month: </h5>
               <p class="px-3">${{listing.price}}</p>
 
@@ -56,7 +56,7 @@
             <div class="card p-2 m-2 col-5" id="body-left">
               <h5 class="col-auto" style="min-width: 150px;" for="fname">Square Footage:</h5>
               <p class="px-3">{{listing.sqft}}</p>
-
+            
               <h5 class="col-auto" style="min-width: 150px;" for="fname">Bed & Bath: </h5>
               <p class="px-3" style="display: block;">{{listing.beds}} Bed / {{listing.baths}} Bath</p>
 
@@ -71,14 +71,16 @@
                 {{listing.details}}
               </p>
             </div>
+            
           </div>
-
+        
       </div>
       </div>
       <div class="d-flex modal-footer justify-content-center">
-        <button (click) = "contactOwner()" type="button" class="btn bg-color-blue btn-lg" style="width: 80%; max-width: 700px">Contact Lister!</button>
+        <button type="button" class="btn bg-color-blue btn-lg" style="width: 80%; max-width: 700px">Contact Lister!</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+

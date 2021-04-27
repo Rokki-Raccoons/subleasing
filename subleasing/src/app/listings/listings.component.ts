@@ -21,45 +21,30 @@ export class ListingsComponent implements OnInit {
   search = new SearchModel("");
   noDocumentsFound = "No results found";
 
-  user = "607fca1679c613ca848cd72e";
 
+  user = "607fca1679c613ca848cd72e";
 
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    console.log(this.user)
-    this.getUsername();
-
-    setTimeout(() => {
-      console.log("beforepopulate" + this.user)
-      this.populateData();
-    }, 200);
+    this.populateData();
   }
 
   public populateData(){
     const headers = { 'content-type': 'application/json'};
-    this.getUsername();
     const options = {'headers':headers, 'params':{'user':this.user}};
     this.listings = [];
 
     this.http.get(this.favURL, options).subscribe((data) => {
-      var results = (data as any);  // want to make sure favorites is saved before making the
+      var results = (data as any);  // want to make sure favorites is saved before making the  
       for (var i = 0; i < results.length; ++i) {
         var newData = results[i];
         newData["favoriteStatus"] = true;
         this.favListings.push(newData);
       }
       //console.log(this.favListings);
-      this.getListings();
-    });
-  }
-
-  public getUsername(){
-    this.http.get('/authenticate').subscribe(data => {
-      var authStatus = (data as any);
-      this.user = authStatus.userid;
-      console.log("getusername "  +  this.user);
+      this.getListings();      
     });
   }
 
@@ -125,6 +110,7 @@ export class ListingsComponent implements OnInit {
     this.pageNumber = 0;
     this.getListings();
   }
+
 
   private checkFavStatus(arr:Array<ListingModel>, val:ListingModel) {
     return arr.some(function(arrVal) {

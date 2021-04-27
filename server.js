@@ -11,6 +11,29 @@ require('dotenv').config(); //loads connection URI from .env
 const converter = require('json-2-csv');
 const fs = require('fs');
 
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './subleasing/src/assets/images')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+const storage2 = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './subleasing/dist/subleasing/assets/images')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({
+    storage: storage
+});
+const upload2 = multer({
+    storage: storage2
+});
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/subleasing/dist/subleasing'));
@@ -20,17 +43,17 @@ app.use(bodyParser.raw());
 
 var loggedIn = false;
 var loggedInUser = "";
-var displayName = "";
 
 // server route handler
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });
 
+
 app.get('/favorites', async function(req, res){
   console.log(`Get Request: ${JSON.stringify(req.query)}`)
   var user = req.query.user;
-  console.log("user: "+user);
+  //console.log("user: "+user);
 
   const uri = process.env.uri;
   const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -43,12 +66,11 @@ app.get('/favorites', async function(req, res){
   //console.log("Connected successfully to Favorites");
 
   var query = {userId: user};
-  // console.log('infavorites ' + loggedInUser);
   const projection = { listingId: 1 };
 
   const cursor = favorites.find(query).project(projection);
   const count = await cursor.count();
-  console.log("Found " + count + " favorite listings");
+  console.log("Found "+count+" favorite listings");
 
   const listings = database.collection("Listings");
   //console.log("Connected successfully to Listings");
@@ -71,7 +93,7 @@ app.get('/favorites', async function(req, res){
 });
 
 app.get("/addfav/:favid", async function(req,res){
-  console.log("addfav hit")
+  // console.log(req)
   var favId = req.params["favid"];
   if(loggedIn){
   const uri = process.env.uri;
@@ -80,13 +102,32 @@ app.get("/addfav/:favid", async function(req,res){
   // Connect the client to the server
   await mclient.connect();
 
-  const dbresult = await mclient.db("SublettyFinal").collection("Favorites").insertOne({ listingId: favId,  userId: loggedInUser.toString()});
+  const dbresult = await mclient.db("SublettyFinal").collection("Favorites").insertOne({ listingId: favId,  userId: loggedInUser});
   console.log("fav added to db: " + favId + " for user: " + loggedInUser);
 
   }
   // console.log("username: " + un + " pass: " + pw);
 });
 
+app.post("/savemsg", async function(req,res){
+  // console.log(req)
+  console.log('savemsg hit');
+  var favId = req.params["favid"];
+  var msgForDb = req.body.msgToSave;
+  if(loggedIn){
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Connect the client to the server
+  await mclient.connect();
+
+  // const dbresult = await mclient.db("SublettyFinal").collection("messages").One({ listingId: favId,  userId: loggedInUser});
+  const result = await mclient.db("SublettyFinal").collection("messages").updateOne({ userId: loggedInUser },{msg: msgForDb },{ upsert: true });
+  console.log("msg added to db: " + msgForDb + " for user: " + loggedInUser);
+
+  }
+  // console.log("username: " + un + " pass: " + pw);
+});
 
 app.get("/removefav/:favid", async function(req,res){
   // console.log(req)
@@ -98,42 +139,14 @@ app.get("/removefav/:favid", async function(req,res){
   // Connect the client to the server
   await mclient.connect();
 
-  const dbresult = await mclient.db("SublettyFinal").collection("Favorites").deleteOne({ listingId: favId,  userId: loggedInUser.toString()});
+  const dbresult = await mclient.db("SublettyFinal").collection("Favorites").deleteOne({ listingId: favId,  userId: loggedInUser});
   console.log("fav removed from db: " + favId + " for user: " + loggedInUser);
 
   }
   // console.log("username: " + un + " pass: " + pw);
 });
 
-app.get("/contactOwner/:ownerId/", async function(req,res){
-  // console.log(req)
-  var ownerId = req.params["ownerId"];
-  if(loggedIn){
-  const uri = process.env.uri;
-  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-  // Connect the client to the server
-  await mclient.connect();
-
-  const dbresult = await mclient.db("SublettyFinal").collection("messages").insertOne({ owner: ownerId,  messageFrom: loggedInUser.toString(), direction:"c2o"});
-  }
-  // console.log("username: " + un + " pass: " + pw);
-});
-
-app.get("/contactClient/:clientId", async function(req,res){
-  //this is hilariously insecure
-  var clientId = req.params["clientId"];
-  if(loggedIn){
-  const uri = process.env.uri;
-  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  // Connect the client to the server
-  await mclient.connect();
-
-  const dbresult = await mclient.db("SublettyFinal").collection("messages").insertOne({ messageTo: clientId,  messageFrom: loggedInUser.toString(), direction:"o2c"});
-  }
-  // console.log("username: " + un + " pass: " + pw);
-});
 
 app.get("/login/:un/:pw", async function(req,res){
   // console.log(req)
@@ -160,7 +173,6 @@ app.get("/login/:un/:pw", async function(req,res){
           console.log("login succ")
           loggedIn = true;
           loggedInUser = dbresult._id;
-          displayName = un;
           console.log("logged in as " + un + loggedInUser)
           res.send({statusCode:200});
         }else{
@@ -168,7 +180,6 @@ app.get("/login/:un/:pw", async function(req,res){
             res.send({statusCode:401});
             loggedIn = false;
             loggedInUser = "";
-            displayName = "Profile";
           }
       });
     }else{
@@ -176,7 +187,6 @@ app.get("/login/:un/:pw", async function(req,res){
       res.send({statusCode:404});
       loggedIn = false;
       loggedInUser = "";
-      displayName = "Profile";
     }
 
 
@@ -202,7 +212,6 @@ app.get("/register/:un/:pw", async function(req,res){
 
   if(result){
     res.send({statusCode:422})
-    displayName = "Profile";
   }
   else{
     bcrypt.hash(pw, 10, async function(err, hash) {
@@ -210,7 +219,6 @@ app.get("/register/:un/:pw", async function(req,res){
     });
     res.send({statusCode:201})
     loggedInUser = result._id;
-    displayName = un;
     console.log("logged in as " + un + loggedInUser)
     loggedIn = true;
 
@@ -220,7 +228,7 @@ app.get("/register/:un/:pw", async function(req,res){
 
 app.get("/authenticate", function(req,res){
   console.log("auth endpoint hit");
-  res.status(200).json({"statusCode" : 200 ,"authenticated" : loggedIn, "usersname" : displayName, "userid": loggedInUser});
+  res.status(200).json({"statusCode" : 200 ,"authenticated" : loggedIn});
 });
 
 app.get('/searchListings', async function(req, res){
@@ -323,7 +331,7 @@ app.put('/ownedListings', async function(req, res){
   // Establish and verify connection
   const database = mclient.db("SublettyFinal");
   const listings = database.collection("Listings");
-  //console.log("Connected successfully to Listings");
+  //console.log("Connected successfully to Listings"); 
   delete newData._id;
 
   const options = {
@@ -352,6 +360,17 @@ app.delete('/ownedListings', async function(req, res){
   res.send(result.result);
 });
 
+
+app.post('/fileUpload', upload.single('image'), function(req, res){
+  console.log(`Pinged the /fileUpload endpoint`);
+  res.send();
+});
+
+app.post('/fileUpload2', upload2.single('image'), function (req, res, next) {
+  console.log("Pinged the /fileUpload2 endpoint");
+  res.send();
+});
+
 // start server
 http.listen(3000, function(){
   console.log('Server up on *:3000');
@@ -370,16 +389,6 @@ app.get('/structures', async function(req, res){
     const database = mclient.db("Lab6");
     const collection = database.collection("listings");
     console.log("Connected successfully to listings");
-    
-app.post('/fileUpload', upload.single('image'), function(req, res){
-  console.log(`Pinged the /fileUpload endpoint`);
-  res.send();
-});
-
-app.post('/fileUpload2', upload2.single('image'), function (req, res, next) {
-  console.log("Pinged the /fileUpload2 endpoint");
-  res.send();
-});
 
     const projection = { structstyle: 1 };
     await collection.find().project(projection).toArray(function(err, etl_results) {
@@ -464,13 +473,5 @@ app.get('/listings', function(req, res){
 });
 
 app.get('/renterpage', function(req, res){
-  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
-});
-
-app.get('/login', function(req, res){
-  res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
-});
-
-app.get('/visualization', function(req, res){
   res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
 });
