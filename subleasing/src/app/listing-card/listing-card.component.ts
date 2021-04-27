@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {ListingModel} from './listing-model'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-listing-card',
@@ -11,7 +12,7 @@ export class ListingCardComponent implements OnInit {
 
   @Input() public listing : ListingModel;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.listing = {_id: -1,
                     ownerID: "-1",
                     address: "",
