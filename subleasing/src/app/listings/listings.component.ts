@@ -21,7 +21,9 @@ export class ListingsComponent implements OnInit {
   search = new SearchModel("");
   noDocumentsFound = "No results found";
 
-  user = "607fca1679c613ca848cd72c";
+  user = "607fca1679c613ca848cd72e";
+
+
 
   constructor(private http: HttpClient) { }
 
