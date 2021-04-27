@@ -5,6 +5,8 @@ import {HeaderComponent} from '../header/header.component';
 import { HttpClient } from '@angular/common/http';
 import {ListingModel} from '../listing-card/listing-model';
 import {NgForm} from '@angular/forms';
+import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-renter-view',
@@ -12,6 +14,9 @@ import {NgForm} from '@angular/forms';
   styleUrls: ['./renter-view.component.css']
 })
 export class RenterViewComponent implements OnInit {
+
+  msg = new FormControl('');
+
 
   URL = "http://localhost:3000/ownedListings";
   listings: Array<ListingModel> = [];
@@ -55,6 +60,11 @@ export class RenterViewComponent implements OnInit {
     this.chosenListing = this.listings[parseInt(t.id)];
   }
 
+  saveMsg(){
+    
+  }
+
+
   public chooseListingToDelete(target: any):void {
     var t = (target as HTMLElement);
     var tempListing = this.listings[parseInt(t.id)];
@@ -86,4 +96,5 @@ export class RenterViewComponent implements OnInit {
     this.chosenListing._id = -1;
     this.getOwnedPropertiesData();
   }
+
 }
