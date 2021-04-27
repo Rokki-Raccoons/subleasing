@@ -16,7 +16,7 @@ export class EditListingComponent implements OnInit {
 
   URL = "http://localhost:3000/ownedListings";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private route: ActivatedRoute) {
     this.editor = {_id: -1,
                     ownerID: "-1",
                     address: "",
