@@ -1,51 +1,23 @@
-
-<br>
-<div class="text-center">
-    <input class="form-control" type="file" 
-            (change)="handleFiles($event)">
-  
-    <button (click)="sendFiles()" 
-        class="btn btn-success">
-        Upload
-    </button>
-</div>
-<div id="insertHere">
-  
-</div>
-<form method="post" action="/fileUpload2" enctype="multipart/form-data">
-  <div>
-    <label for="file">Choose a file</label>
-    <input type="file" id="file" name="myFile">
-  </div>
-  <div>
-    <button type="submit">Send the file</button>
-  </div>
-</form>
-<!-- <form action="/fileUpload2" method="post" enctype="multipart/form-data">
-  <input type="file" name="aptImage" />
-  <button type="submit">Submit</button>
-</form>
- -->
-<!-- Shareable short link of  uoloaded file -->
-<div class="container text-center jumbotron"
-    *ngIf="shortLink">
-    <h2> Visit Here</h2>
-    <a href="{{shortLink}}">{{shortLink}}</a>
-</div>
-  
-<!--Flag variable is used here-->
-<div class="container" *ngIf="loading">
-    <h3>Loading ...</h3>
-</div>
-
 <div class="card mb-3 text-left">
-  <img class="card-img-top" [src]="editor.photoRef" alt="apartment picture">
+  <div id="photoPreviewDiv">
+    <img class="card-img-top" [src]="editor.photoRef" alt="apartment picture" id="photoPreviewImg">
+  </div>
+  
   <div class="card-body">
 
     <form #editForm="ngForm" novalidate id="formAction" action="javascript:void(0);" class="form">
       <div class="form-group row mb-1">
-        <label class="col-auto" style="min-width: 150px;" for="fname">Add Images: </label>
-        <input class="col form-control-file" type="file" multiple name="image_upload" [(ngModel)]="editor.photoRef">
+        <!--<div class="text-center">
+           <label class="col-auto" style="min-width: 150px;" for="image">Upload New Image: </label>
+          <input class="form-control" type="file" name="image" (change)="handleFileInput($event)">
+        
+          <button (click)="onSubmit()" class="btn btn-success inline">Upload New Image</button>
+        </div> -->
+
+        <label class="col-auto" style="min-width: 150px;" for="fname">Upload New Image: </label>
+        <input class="col form-control" type="file" name="image" (change)="handleFileInput($event)">
+        <!-- <button (click)="onSubmit()" class="btn btn-success inline col-auto" id="uploadButton">Upload New Image</button> -->
+        <!-- <input class="col form-control-file" type="file" name="image_upload" [(ngModel)]="editor.photoRef"> -->
       </div>
       <div class="form-group row mb-2">
         <label class="col-auto" style="min-width: 150px;" for="location">Location: </label>
