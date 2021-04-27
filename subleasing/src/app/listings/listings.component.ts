@@ -28,7 +28,13 @@ export class ListingsComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.populateData();
+    console.log(this.user)
+    this.getUsername();
+
+    setTimeout(() => {
+      console.log("beforepopulate" + this.user)
+      this.populateData();
+    }, 200);
   }
 
   public populateData(){
@@ -45,6 +51,14 @@ export class ListingsComponent implements OnInit {
       }
       //console.log(this.favListings);
       this.getListings();      
+    });
+  }
+
+  public getUsername(){
+    this.http.get('/authenticate').subscribe(data => {
+      var authStatus = (data as any);
+      this.user = authStatus.userid;
+      console.log("getusername "  +  this.user);
     });
   }
 

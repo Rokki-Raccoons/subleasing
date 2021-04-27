@@ -7,17 +7,20 @@
   </button>
 
   <div class="collapse navbar-collapse justify-content-right" id="navbarSupportedContent">
-    <a class="nav-item nav-link" routerLink="/renterpage"  [queryParams]="{}" routerLinkActive="active">
+    <a class="nav-item nav-link" href="/listings">
+      <i class="bi-card-text px-1" style="font-size: 1.1rem;" alt="logout button"></i>
+      Search Listings
+    </a>
+    <a  *ngIf="authed" class="nav-item nav-link" routerLink="/renterpage"  [queryParams]="{}" routerLinkActive="active">
       <i class="bi-house-fill px-1" style="font-size: 1.1rem;" alt="owned properties button"></i>
       My Properties
     </a>
-    <a class="nav-item nav-link" routerLink="/messages"  href="#">
-      <i class="bi-person-fill px-1" style="font-size: 1.1rem;" alt="profile button">{{usern}}</i>
-
-    </a>
-    <a class="nav-item nav-link" routerLink="/datavis"  [queryParams]="{}" routerLinkActive="active">
+    <a *ngIf="authed" class="nav-item nav-link" routerLink="/datavis"  [queryParams]="{}" routerLinkActive="active">
       <i class="bi bi-bar-chart-line-fill px-1" style="font-size: 1.1rem;" alt="visualizations button"></i>
       Visualizations
+    </a>    
+    <a *ngIf="authed" class="nav-item nav-link" routerLink="/messages"  href="#">
+      <i class="bi-person-fill px-1" style="font-size: 1.1rem;" alt="profile button"> {{usern}}</i>
     </a>
     <a *ngIf="!authed" class="nav-item nav-link" routerLink="/login">
       <i class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="logout button"></i>
@@ -26,10 +29,6 @@
     <a (click) = "logout()" *ngIf="authed" class="nav-item nav-link" routerLink="/">
       <i (click) = "logout()" class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="logout button"></i>
       Logout
-    </a>
-    <a class="nav-item nav-link" href="#">
-      <i class="bi-door-open-fill px-1" style="font-size: 1.1rem;" alt="logout button"></i>
-      Listings (Home)
     </a>
   </div>
 

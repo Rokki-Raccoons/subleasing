@@ -67,7 +67,8 @@ app.get('/favorites', async function(req, res){
   const favorites = database.collection("Favorites");
   //console.log("Connected successfully to Favorites");
 
-  var query = {userId: user};
+  var query = {userId: loggedInUser.toString()};
+  console.log(query);
   const projection = { listingId: 1 };
 
   const cursor = favorites.find(query).project(projection);
