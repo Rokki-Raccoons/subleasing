@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-landing',
@@ -25,7 +24,6 @@ export class LandingComponent implements OnInit {
         (<HTMLInputElement>document.getElementById("invalid")).style.display = "none";
         (<HTMLInputElement>document.getElementById("invalid2")).style.display = "none";
         (<HTMLInputElement>document.getElementById("newuser")).style.display = "none";
-        window.location.href = "/listings";
       }else{
         (<HTMLInputElement>document.getElementById("invalid")).style.display = "block";
         (<HTMLInputElement>document.getElementById("succeeded")).style.display = "none";
@@ -45,7 +43,6 @@ export class LandingComponent implements OnInit {
         (<HTMLInputElement>document.getElementById("invalid2")).style.display = "none";
         (<HTMLInputElement>document.getElementById("succeeded")).style.display = "none";
         (<HTMLInputElement>document.getElementById("invalid")).style.display = "none";
-        window.location.href = "/listings";
       }
       if(statusInfo.statusCode == 422){
         (<HTMLInputElement>document.getElementById("invalid2")).style.display = "block";

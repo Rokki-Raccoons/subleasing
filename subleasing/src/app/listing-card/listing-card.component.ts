@@ -8,9 +8,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   templateUrl: './listing-card.component.html',
   styleUrls: ['./listing-card.component.css']
 })
-
 export class ListingCardComponent implements OnInit {
+
   @Input() public listing : ListingModel;
+
   constructor(private http: HttpClient) {
     this.listing = {_id: -1,
                     ownerID: "-1",
@@ -37,7 +38,6 @@ export class ListingCardComponent implements OnInit {
   }
 
   favClick(target: any):void {
-    console.log("favclick");
     var add = true;
     var t = (target as HTMLElement);
     if (t.classList.contains("bi-star-fill")){
@@ -69,10 +69,6 @@ export class ListingCardComponent implements OnInit {
     if (icon[0].classList.contains("bi-star")){
       icon[0].style.visibility = "hidden";
     }
-  }
-
-  contactOwner(){
-      this.http.get('/contactOwner/' + this.listing.ownerID ).subscribe(data => {});
   }
 
 }

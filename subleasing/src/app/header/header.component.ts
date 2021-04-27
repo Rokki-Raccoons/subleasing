@@ -10,7 +10,6 @@ import { NgModule } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   authed = false;
-  usern = "Profile";
 
   constructor(private http: HttpClient) { }
 
@@ -24,18 +23,18 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(){
-    console.log("logout hit");
     this.authed = false;
-    this.usern = "Profile";
-    this.http.get('/login/fakename/userthatdoesnotexist').subscribe(data => {});
+    this.http.get('/login/fake/user').subscribe(data => {
+      // var authStatus = (data as any);
+      // this.isAuthed = authStatus.authenticated;
+    });
   }
 
   checkAuth(){
     this.http.get('/authenticate').subscribe(data => {
       var authStatus = (data as any);
       this.authed = authStatus.authenticated;
-      this.usern = authStatus.usersname;
-      console.log("CHECKAUTH "  + this.authed + this.usern);
+      console.log("CHECKAUTH "  + this.authed);
       console.log(authStatus.authenticated);
     });
 

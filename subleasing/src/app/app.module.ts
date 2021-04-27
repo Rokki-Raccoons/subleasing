@@ -14,7 +14,6 @@ import { RenterViewComponent } from './renter-view/renter-view.component';
 import { LandingComponent } from './landing/landing.component';
 import { DatavisComponent } from './datavis/datavis.component';
 import { PathErrorPageComponent } from './path-error-page/path-error-page.component';
-import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +26,7 @@ import { ProfileComponent } from './profile/profile.component';
     RenterViewComponent,
     LandingComponent,
     DatavisComponent,
-    PathErrorPageComponent,
-    ProfileComponent
+    PathErrorPageComponent
   ],
   imports: [
     BrowserModule,
@@ -40,4 +38,5 @@ import { ProfileComponent } from './profile/profile.component';
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

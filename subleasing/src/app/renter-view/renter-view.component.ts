@@ -7,20 +7,19 @@ import {ListingModel} from '../listing-card/listing-model';
 import {NgForm} from '@angular/forms';
 import { FormControl } from '@angular/forms';
 
+
 @Component({
   selector: 'app-renter-view',
   templateUrl: './renter-view.component.html',
   styleUrls: ['./renter-view.component.css']
 })
-
 export class RenterViewComponent implements OnInit {
 
   msg = new FormControl('');
 
+
   URL = "http://localhost:3000/ownedListings";
   listings: Array<ListingModel> = [];
-  hasMessage = false;
-  message = "";
   noDocumentsFound = true;
   user = "607fca1679c613ca848cd72c"; // hardcoded for now, I will figure out how to
                                      // fix that when Kolby finishes auth stuff
@@ -53,7 +52,7 @@ export class RenterViewComponent implements OnInit {
       else {
         this.noDocumentsFound = false;
       }
-    });
+    }); 
   }
 
   public chooseListingToEdit(target: any):void {
@@ -62,8 +61,7 @@ export class RenterViewComponent implements OnInit {
   }
 
   saveMsg(){
-
-
+    
   }
 
 
@@ -80,7 +78,7 @@ export class RenterViewComponent implements OnInit {
       this.chosenListing._id = -1;
       this.getOwnedPropertiesData();
       location.reload();
-    });
+    }); 
   }
 
   public createNew():void {
