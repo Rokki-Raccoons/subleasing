@@ -370,6 +370,16 @@ app.get('/structures', async function(req, res){
     const database = mclient.db("Lab6");
     const collection = database.collection("listings");
     console.log("Connected successfully to listings");
+    
+app.post('/fileUpload', upload.single('image'), function(req, res){
+  console.log(`Pinged the /fileUpload endpoint`);
+  res.send();
+});
+
+app.post('/fileUpload2', upload2.single('image'), function (req, res, next) {
+  console.log("Pinged the /fileUpload2 endpoint");
+  res.send();
+});
 
     const projection = { structstyle: 1 };
     await collection.find().project(projection).toArray(function(err, etl_results) {
