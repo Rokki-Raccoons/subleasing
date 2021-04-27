@@ -7,12 +7,16 @@ import { LandingComponent } from './landing/landing.component';
 import { DatavisComponent } from './datavis/datavis.component';
 import {PathErrorPageComponent} from './path-error-page/path-error-page.component';
 
+
+import { EditListingComponent } from './edit-listing/edit-listing.component';
+
 const routes: Routes = [
   {path: 'listings', component: ListingsComponent},
   {path: 'renterpage', component: RenterViewComponent},
   {path: 'login', component: LandingComponent},
   {path: 'datavis', component: DatavisComponent},
   {path: '', redirectTo: '/listings', pathMatch: 'full'},
+  {path: 'edit', component: EditListingComponent},
   {path: '**', component: PathErrorPageComponent }, 
 ];
 

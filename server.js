@@ -10,6 +10,8 @@ require('dotenv').config(); //loads connection URI from .env
 const converter = require('json-2-csv');
 const fs = require('fs');
 
+const multer = require('multer');
+const upload = multer({dest: 'subleasing/src/assets/images'});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -248,6 +250,38 @@ app.delete('/ownedListings', async function(req, res){
   const result = await listings.deleteOne(query);
   res.send(result.result);
 });
+
+app.post('/fileUpload2', upload.single('filename'), function (req, res, next) {
+  // req.file is the `aptImage` file
+  // req.body will hold the text fields, if there were any
+  console.log("Pinged the /fileUpload2 endpoint");
+});
+
+app.post('/fileUpload', function(req, res){
+  //var name = req.params['filename'];
+  // var newData = req;
+
+  console.log(`Pinged the /fileUpload endpoint`);
+  // console.log(newData);
+  // console.log(newData.body);
+  res.send();
+
+  // const uri = process.env.uri;
+  // const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // // Connect the client to the server
+  // await mclient.connect();
+  // // Establish and verify connection
+  // const database = mclient.db("SublettyFinal");
+  // const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings");
+
+  // inserted = await listings.insertOne(newData).catch(e => {
+  //   console.log(e);
+  // });
+  // console.log("inserted document into the Listings collection");
+  //res.send(newData);
+}, (error, req, res, next) => {res.status(400).send({error: error.message})});
 
 // start server
 http.listen(3000, function(){
