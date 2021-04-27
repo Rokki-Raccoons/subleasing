@@ -22,11 +22,14 @@ export class LandingComponent implements OnInit {
       if(statusInfo.statusCode == 200){
         (<HTMLInputElement>document.getElementById("succeeded")).style.display = "block";
         (<HTMLInputElement>document.getElementById("invalid")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("invalid2")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("newuser")).style.display = "none";
       }else{
         (<HTMLInputElement>document.getElementById("invalid")).style.display = "block";
         (<HTMLInputElement>document.getElementById("succeeded")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("invalid2")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("newuser")).style.display = "none";
       }
-      console.log(data);
     })
     return true;
   }
@@ -38,12 +41,15 @@ export class LandingComponent implements OnInit {
       if(statusInfo.statusCode == 201){
         (<HTMLInputElement>document.getElementById("newuser")).style.display = "block";
         (<HTMLInputElement>document.getElementById("invalid2")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("succeeded")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("invalid")).style.display = "none";
       }
       if(statusInfo.statusCode == 422){
         (<HTMLInputElement>document.getElementById("invalid2")).style.display = "block";
         (<HTMLInputElement>document.getElementById("newuser")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("succeeded")).style.display = "none";
+        (<HTMLInputElement>document.getElementById("invalid")).style.display = "none";
       }
-      // console.log(data);
     })
     return true;
   }
