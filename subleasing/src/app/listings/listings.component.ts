@@ -10,9 +10,8 @@ import {NgForm} from '@angular/forms';
   templateUrl: './listings.component.html',
   styleUrls: ['./listings.component.css']
 })
-
 export class ListingsComponent implements OnInit {
-  
+
   URL = "http://localhost:3000/searchListings";
   favURL = "http://localhost:3000/favorites";
   listings: Array<ListingModel> = [];
@@ -21,8 +20,10 @@ export class ListingsComponent implements OnInit {
   maxPage = -1;
   search = new SearchModel("");
   noDocumentsFound = "No results found";
-  user = "607fca1679c613ca848cd72c"; // hardcoded for now, I will figure out how to
-                                     // fix that when Kolby finishes auth stuff
+
+
+  user = "607fca1679c613ca848cd72e";
+
 
   constructor(private http: HttpClient) { }
 
@@ -36,14 +37,14 @@ export class ListingsComponent implements OnInit {
     this.listings = [];
 
     this.http.get(this.favURL, options).subscribe((data) => {
-      var results = (data as any);  // want to make sure favorites is saved before making the
+      var results = (data as any);  // want to make sure favorites is saved before making the  
       for (var i = 0; i < results.length; ++i) {
         var newData = results[i];
         newData["favoriteStatus"] = true;
         this.favListings.push(newData);
       }
       //console.log(this.favListings);
-      this.getListings();
+      this.getListings();      
     });
   }
 

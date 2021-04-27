@@ -8,14 +8,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   templateUrl: './listing-card.component.html',
   styleUrls: ['./listing-card.component.css']
 })
-
 export class ListingCardComponent implements OnInit {
 
   @Input() public listing : ListingModel;
 
-  constructor(private http : HttpClient) {
+  constructor(private http: HttpClient) {
     this.listing = {_id: -1,
-                    ownerId: -1,
+                    ownerID: "-1",
                     address: "",
                     price: -1,
                     photoRef: "",
@@ -30,7 +29,7 @@ export class ListingCardComponent implements OnInit {
                     favoriteStatus: false};
   }
   ngOnInit(): void {
-    // console.log(this.listing);
+    console.log(this.listing);
   }
 
   ngAfterViewInit(): void{

@@ -7,12 +7,12 @@ import { NgModule } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent implements OnInit {
 
   authed = false;
 
   constructor(private http: HttpClient) { }
+
   ngOnInit(): void {
     this.checkAuth();
     console.log("ONINIT" + this.authed)
@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit {
       // var authStatus = (data as any);
       // this.isAuthed = authStatus.authenticated;
     });
-    window.location.reload();
   }
 
   checkAuth(){
