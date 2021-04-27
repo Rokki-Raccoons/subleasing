@@ -1,23 +1,11 @@
 <div class="card mb-3 text-left">
-  <div id="photoPreviewDiv">
-    <img class="card-img-top" [src]="editor.photoRef" alt="apartment picture" id="photoPreviewImg">
-  </div>
-  
+  <img class="card-img-top" [src]="editor.photoRef" alt="apartment picture">
   <div class="card-body">
 
     <form #editForm="ngForm" novalidate id="formAction" action="javascript:void(0);" class="form">
       <div class="form-group row mb-1">
-        <!--<div class="text-center">
-           <label class="col-auto" style="min-width: 150px;" for="image">Upload New Image: </label>
-          <input class="form-control" type="file" name="image" (change)="handleFileInput($event)">
-        
-          <button (click)="onSubmit()" class="btn btn-success inline">Upload New Image</button>
-        </div> -->
-
-        <label class="col-auto" style="min-width: 150px;" for="fname">Upload New Image: </label>
-        <input class="col form-control" type="file" name="image" (change)="handleFileInput($event)">
-        <!-- <button (click)="onSubmit()" class="btn btn-success inline col-auto" id="uploadButton">Upload New Image</button> -->
-        <!-- <input class="col form-control-file" type="file" name="image_upload" [(ngModel)]="editor.photoRef"> -->
+        <label class="col-auto" style="min-width: 150px;" for="fname">Add Images: </label>
+        <input class="col form-control-file" type="file" multiple name="image_upload" [(ngModel)]="editor.photoRef">
       </div>
       <div class="form-group row mb-2">
         <label class="col-auto" style="min-width: 150px;" for="location">Location: </label>
@@ -86,9 +74,15 @@
         <label class="col-auto" style="min-width: 150px;" for="description">Other Info: </label>
         <textarea class="col form-control" name="description" id="description" [(ngModel)]="editor.details">{{editor.details}}</textarea>
       </div>
-      <input class="btn bg-color-dark-blue" type="submit" (click)="saveChanges()" value="Save Edits" id="saveButton">
-
+      <input class="btn bg-color-dark-blue" type="submit" value="Save Edits">
     </form>
   </div>
 
 </div>
+<!-- 
+<div *ngIf="listing.favoriteStatus; else elseBlock">
+            <i class="bi-star-fill favorite" type="submit" style="font-size: 2rem; visibility: visible;" alt="favorite button" (click)="favClick($event.target)"></i>
+          </div>
+          <ng-template #elseBlock>
+            <i class="bi-star favorite" type="submit" style="font-size: 2rem; visibility: hidden" alt="favorite button" (click)="favClick($event.target)"></i>
+          </ng-template> -->
