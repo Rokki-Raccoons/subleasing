@@ -9,6 +9,7 @@ import {PathErrorPageComponent} from './path-error-page/path-error-page.componen
 
 import { AuthGuard } from './auth/auth.guard';
 
+
 const routes: Routes = [
   {path: 'listings', component: ListingsComponent},
   {path: 'renterpage', component: RenterViewComponent, canActivate: [AuthGuard]},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'datavis', component: DatavisComponent, canActivate: [AuthGuard]},
   {path: '', redirectTo: '/listings', pathMatch: 'full'},
   {path: '**', component: PathErrorPageComponent },
+
 ];
 
 @NgModule({

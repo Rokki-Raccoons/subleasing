@@ -38,4 +38,5 @@ import { PathErrorPageComponent } from './path-error-page/path-error-page.compon
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
