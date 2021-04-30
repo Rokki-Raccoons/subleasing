@@ -11,6 +11,8 @@ See INSTALL.MD
 The login system leverages Bcrypt encryption to safely store the hashes of passwords in the database.
 The server manages interactions between the front end and the database, pulling information such as listing data for the listing cards, handling login verification, and other assorted transactions such as logging favorites and messages being sent.
 
+For API docs, see API.MD
+
 ## Front end:
 There are a variety of components to handle different portions of the web-page.
 
