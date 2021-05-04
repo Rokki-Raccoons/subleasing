@@ -109,28 +109,9 @@ app.get("/addfav/:favid", async function(req,res){
   console.log("fav added to db: " + favId + " for user: " + loggedInUser);
 
   }
-  // console.log("username: " + un + " pass: " + pw);
 });
 
-// app.post("/savemsg", async function(req,res){
-//   // console.log(req)
-//   console.log('savemsg hit');
-//   var favId = req.params["favid"];
-//   var msgForDb = req.body.msgToSave;
-//   if(loggedIn){
-//   const uri = process.env.uri;
-//   const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-//   // Connect the client to the server
-//   await mclient.connect();
-
-//   // const dbresult = await mclient.db("SublettyFinal").collection("messages").One({ listingId: favId,  userId: loggedInUser.toString()});
-//   const result = await mclient.db("SublettyFinal").collection("messages").updateOne({ userId: loggedInUser },{msg: msgForDb },{ upsert: true });
-//   console.log("msg added to db: " + msgForDb + " for user: " + loggedInUser);
-
-//   }
-//   // console.log("username: " + un + " pass: " + pw);
-// });
 
 app.get("/removefav/:favid", async function(req,res){
   // console.log(req)
@@ -518,4 +499,97 @@ app.get('/login', function(req, res){
 
 app.get('/visualization', function(req, res){
   res.sendFile(__dirname + '/subleasing/dist/subleasing/index.html');
+});
+
+app.get('/listings/:searchID', async function(req, res){
+  //setup vars
+  var searchID = req.params["searchID"];
+
+
+  //db connect
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const listings = database.collection("Listings");
+  //console.log("Connected successfully to Listings");
+
+  listings.createIndex({address: "text", details: "text"});
+
+  var query;
+  var sort;
+  if (searchID == undefined || searchID == ""){
+    query = {};
+    sort = {};
+  }
+  else {
+    query = {$text: {$search: searchID} };
+    sort = { score: { $meta: "textScore" } };
+  }
+  const cursor = listings.find(query).sort(sort);
+  const count = await cursor.count();
+  await cursor.toArray(function(err, etl_results) {
+    const prettyJson = JSON.stringify(etl_results);
+    console.log("Found data: "+prettyJson);
+    console.log("Found "+count+" data documents");
+    res.send({'count':count, 'limitedData':etl_results});
+  });
+});
+
+app.get('/saved/:userID', async function(req, res){
+  //setup vars
+  var userID = String(req.params["userID"]);
+
+
+  //db connect
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const favorites = database.collection("Favorites");
+
+  //favorites.createIndex({userId: "text"});
+
+ 
+  var query = {userId: userID};
+  
+  const cursor = favorites.find(query);
+  const count = await cursor.count();
+  await cursor.toArray(function(err, etl_results) {
+    const prettyJson = JSON.stringify(etl_results);
+    console.log("Found data: "+prettyJson);
+    console.log("Found "+count+" data documents");
+    res.send({'count':count, 'limitedData':etl_results});
+  });
+});
+
+app.get('/offers/:userID', async function(req, res){
+  //setup vars
+  var userID = String(req.params["userID"]);
+
+
+  //db connect
+  const uri = process.env.uri;
+  const mclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  // Connect the client to the server
+  await mclient.connect();
+  // Establish and verify connection
+  const database = mclient.db("SublettyFinal");
+  const messages = database.collection("messages");
+
+ 
+  var query = {messageTo: userID};
+  
+  const cursor = messages.find(query);
+  const count = await cursor.count();
+  await cursor.toArray(function(err, etl_results) {
+    const prettyJson = JSON.stringify(etl_results);
+    console.log("Found data: "+prettyJson);
+    console.log("Found "+count+" data documents");
+    res.send({'count':count, 'limitedData':etl_results});
+  });
 });
